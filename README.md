@@ -110,7 +110,7 @@ main                        # material oficial e estável
 
 ```bash
 # Clonar o repositório
-git clone https://oauth2:SEU_TOKEN@umane.emeal.nttdata.com/git/DATASCIENC/beca-2026.git
+git clone https://oauth2:SEU_TOKEN@umane.xxxxx.xxxxxxx.xxx/git/DATASCIENC/beca-2026.git
 
 # Criar branch de trabalho a partir de dev
 git checkout dev
