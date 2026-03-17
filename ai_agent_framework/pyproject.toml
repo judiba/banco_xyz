@@ -1,0 +1,19 @@
+[project]
+name = "ai-agent-framework"
+version = "0.1.0"
+description = "Professional LangChain Agent Framework"
+requires-python = ">=3.10"
+
+dependencies = [
+    "langchain>=0.2.0",
+    "langchain-core>=0.2.0",
+    "langchain-community>=0.2.0",
+    "langchain-openai>=0.1.0",
+    "python-dotenv",
+    "requests",
+    "rich"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
