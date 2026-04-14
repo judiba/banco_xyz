@@ -1,0 +1,11 @@
+# HTTP
+requests==2.31.0
+urllib3==1.26.18
+charset-normalizer==3.3.2
+chardet==5.2.0
+
+# UI
+streamlit==1.33.0
+
+# PDF
+reportlab==4.2.5
