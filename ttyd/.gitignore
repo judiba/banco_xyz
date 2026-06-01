@@ -1,0 +1,199 @@
+# =====================================================
+# PYTHON
+# =====================================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribuição / build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =====================================================
+# VIRTUAL ENV
+# =====================================================
+
+.venv/
+venv/
+env/
+ENV/
+**/venv/
+
+# =====================================================
+# ENVIRONMENT / SECRETS (CRÍTICO)
+# =====================================================
+# Nunca versionar credenciais, JWT, SAML certs, chaves AWS/Entra.
+
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# Gerados por: make env-dev | env-local | env-prod
+security/.env.dev
+security/.env.local
+security/.env.prod
+
+# Overrides locais (não commitar)
+.env.local
+.env.dev.local
+*.env.local
+
+# =====================================================
+# LOGS
+# =====================================================
+
+*.log
+logs/
+
+# =====================================================
+# IDE / EDITOR
+# =====================================================
+
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Cursor / agentes locais
+.cursor/
+.agent/telemetry.json
+
+# =====================================================
+# SISTEMA OPERACIONAL
+# =====================================================
+
+.DS_Store
+Thumbs.db
+
+# Remover metadados do Windows
+*:Zone.Identifier
+*.Identifier
+
+# =====================================================
+# CACHE / TEMP / LINT
+# =====================================================
+
+*.tmp
+*.cache
+.cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# =====================================================
+# TESTES / COBERTURA
+# =====================================================
+
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+nosetests.xml
+
+# =====================================================
+# RAG / IA / FAISS
+# =====================================================
+
+*.faiss
+*.index
+*.pkl
+*.npy
+vectorstore/
+faiss_index/
+embeddings/
+
+# =====================================================
+# DADOS LOCAIS
+# =====================================================
+
+*.sqlite3
+*.sqlite
+db.sqlite3
+*.db-journal
+
+# =====================================================
+# AWS / SEGURANÇA
+# =====================================================
+
+aws_credentials.json
+credentials.json
+*.pem
+*.key
+*.p12
+*.pfx
+saml/*.xml
+federation-metadata*.xml
+
+# =====================================================
+# BEDROCK / AGENTCORE / DEPLOY LOCAL
+# =====================================================
+
+.bedrock_agentcore.cache/
+payload.json
+
+# Override local com ARNs/paths da máquina (manter só templates no repo)
+deploy/.bedrock_agentcore.local.yaml
+deploy/docker-compose.override.yml
+docker-compose.override.yml
+
+# =====================================================
+# TERRAFORM
+# =====================================================
+
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+override.tf
+override.tf.json
+
+# =====================================================
+# ARQUIVOS GERADOS
+# =====================================================
+
+*.generated.yaml
+*.backup
+*.bak
+graphify-out/
+
+# =====================================================
+# DOCKER
+# =====================================================
+
+*.tar
+*.gz
+
+# =====================================================
+# JUPYTER / NOTEBOOKS
+# =====================================================
+
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# =====================================================
+# NODE (se houver front no monorepo)
+# =====================================================
+
+node_modules/
+npm-debug.log*
+yarn-error.log*
+dist-ssr/
+
+# =====================================================
+# OUTROS
+# =====================================================
+
+*.out
+*.err
+*.pid

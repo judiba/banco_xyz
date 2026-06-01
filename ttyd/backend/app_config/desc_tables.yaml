@@ -1,0 +1,53 @@
+tabelas:
+  agg_evolucao_cadastral:
+    descricao: 'Contém dados históricos desde o início de 2022 e monitora o crescimento da base,  detalhando quantos usuários novos entraram e quantos são duplicados  (uma mesma pessoa com cadastros em produtos diferentes, como R7 e PlayPlus). Deve ser utilizada para análises de crescimento da base, comparação entre cadastros brutos e únicos e avaliação de impacto de campanhas no volume de entrada. Não deve ser usada para análises comportamentais ou consultas em nível de usuário.
+
+      '
+  agg_user:
+    descricao: 'Base consolidada de usuários do PlayPlus com uma linha por idunico, contendo dados cadastrais, demográficos, socioeconômicos, geográficos e flags como active_user e flag_pagante. É a principal dimensão de usuários do PlayPlus e deve ser utilizada para análises de perfil demográfico, segmentações por renda, classe social, idade ou região, identificação de usuários ativos e cruzamento com dados de consumo. Não deve ser utilizada para análise de eventos de navegação ou sessões detalhadas.
+
+      '
+  agg_user_r7:
+    descricao: 'Base agregada de usuários cadastrados no portal R7, com uma linha por idunico, contendo informações demográficas e status de atividade (usuário ativo nos últimos 30 dias). Deve ser utilizada para análise de perfil da base do R7, segmentações demográficas e identificação de usuários ativos no portal. Não deve ser usada para análise detalhada de navegação ou dados do PlayPlus.
+
+      '
+  agg_catraca:
+    descricao: 'Identifica a origem do cadastro do usuário do portal R7, ou seja, por qual página ou editoria  (ex: newsletter) ele entrou no ecossistema da Record antes de se cadastrar. Ela é composta basicamente por IDs vindos do portal R7 e dados de navegação como URL completa da página  onde o usuário estava no momento da interação que precedeu o cadastro, sessão, editoria, campanha e origem de tráfego que antecederam o cadastro do usuário. É a principal tabela para análise de conversão e funil de aquisição, permitindo identificar quais editorias, URLs ou campanhas geraram cadastros.
+
+      '
+  agg_ga:
+    descricao: "Tabela agregada por idunico, data e URL contendo a quantidade de acessos ao portal R7 provenientes do Google Analytics. Deve ser utilizada para análises de volume de acessos por URL, frequência de acesso por usuário e métricas agregadas simples de tráfego. \n"
+  agg_r7:
+    descricao: 'Base detalhada de consumo do portal R7 (GA4), contendo dados comportamentais, editoriais, geográficos, tecnológicos e demográficos enriquecidos. É a principal tabela para análise comportamental no portal, permitindo avaliar navegação por editoria, dispositivo, localização e perfil demográfico. Não deve ser utilizada quando a necessidade for apenas volume histórico mensal consolidado.
+
+      '
+  agg_r7_hist:
+    descricao: 'Tabela histórica agregada mensal contendo o volume total de eventos page_view no portal R7. Deve ser utilizada para análises macro de tendência histórica e construção de séries temporais consolidadas. Não é adequada para segmentações detalhadas ou análises por usuário.
+
+      '
+  pp_cc_live:
+    descricao: 'Base detalhada de consumo de conteúdo ao vivo (Live) do PlayPlus, com dados de sessão e enriquecimento demográfico do usuário. Contém informações como minutos assistidos, dispositivo, sinal e horário de consumo. Deve ser utilizada para análises de consumo de TV ao vivo, tempo médio por programa, segmentação por perfil demográfico e avaliação de comportamento de usuários pagantes.
+
+      '
+  pp_cc_vod:
+    descricao: 'Base detalhada de consumo de conteúdo sob demanda (VOD) do PlayPlus, contendo dados de sessão e perfil demográfico do usuário. Deve ser utilizada para análises de consumo por título, retenção por gênero, segmentação demográfica e avaliação de performance de conteúdos sob demanda.
+
+      '
+  pp_aud_live:
+    descricao: 'Tabela de audiência Live com dados detalhados de sessão, focada em métricas técnicas de consumo como timestamps de início e fim e duração da sessão, sem enriquecimento demográfico completo. Deve ser utilizada para cálculos técnicos de tempo assistido e análises operacionais de consumo ao vivo.
+
+      '
+  pp_aud_vod:
+    descricao: 'Tabela de audiência VOD com dados técnicos detalhados de sessão, incluindo início, fim e duração do consumo. utilizada para alimentar os dashboards  de audiência de conteúdos gravados (VOD - Video On Demand) do PlayPlus.  Ela consolida logs de consumo histórico para identificar o comportamento dos usuários ao assistir filmes, séries e episódios de programas.
+
+      '
+  agg_profile:
+    descricao: 'Tabela auxiliar contendo idunico e nome_formatado, utilizada para enriquecimento simples de identificação do perfil do usuário. Deve ser usada apenas para complementar informações básicas de identificação, não sendo adequada para análises demográficas ou comportamentais.
+
+      '
+  agg_user_mrp:
+    descricao: 'Base histórica agregada de usuários do extinto produto Mundo Record de Prêmios (MRP), contendo dados demográficos e cadastrais para análises retroativas. Deve ser utilizada apenas para análises históricas relacionadas ao MRP ou comparações com outras bases.
+
+      '
+  agg_cadastro_source:
+    descricao: Tabela de origem dos cadastros do ecossistema Record, contendo o identificador único do usuário, o canal ou produto de origem e a data em que o cadastro foi realizado. Deve ser utilizada para análises de aquisição, origem de usuários e evolução de cadastros por fonte.

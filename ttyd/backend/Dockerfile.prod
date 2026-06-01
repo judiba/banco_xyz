@@ -1,0 +1,31 @@
+# [PROD] Environment: Production (AgentCore/AWS)
+# Stage 1: Build
+FROM python:3.12-slim as builder
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir poetry==1.8.2 \
+    && poetry config virtualenvs.create false
+
+COPY pyproject.toml poetry.lock ./
+# Instala apenas o essencial de produção em um diretório específico
+RUN poetry install --only main --with database,vector,ingestion,agentcore,memory,prod --no-interaction --no-ansi --no-root
+
+# Stage 2: Runtime
+FROM python:3.12-slim as runtime
+
+WORKDIR /app
+
+# Copia os pacotes instalados do stage builder
+COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+
+COPY backend ./backend
+
+ENV PYTHONPATH=/app
+
+# Expondo a porta 8000
+EXPOSE 8000
+
+# Uvicorn usa o host 0.0.0.0 para escutar em todas as interfaces e o número de workers é definido para 4 para melhor desempenho em produção
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]

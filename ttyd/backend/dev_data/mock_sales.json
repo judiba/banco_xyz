@@ -1,0 +1,8 @@
+[
+    {"mes": "Jan", "receita": 120500000, "pedidos": 450, "alcance_milhoes": 45.2},
+    {"mes": "Fev", "receita": 115200000, "pedidos": 420, "alcance_milhoes": 44.8},
+    {"mes": "Mar", "receita": 138400000, "pedidos": 510, "alcance_milhoes": 48.5},
+    {"mes": "Abr", "receita": 142100000, "pedidos": 530, "alcance_milhoes": 49.1},
+    {"mes": "Mai", "receita": 155000000, "pedidos": 580, "alcance_milhoes": 52.3},
+    {"mes": "Jun", "receita": 148900000, "pedidos": 560, "alcance_milhoes": 50.8}
+]

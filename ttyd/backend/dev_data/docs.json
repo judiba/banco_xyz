@@ -1,0 +1,26 @@
+[
+  {
+    "id": "doc-001",
+    "categoria": "seguranca",
+    "titulo": "Política de Segurança da Informação",
+    "texto": "O acesso a dados sensíveis deve respeitar o princípio do menor privilégio. Toda concessão deve ser revisada periodicamente."
+  },
+  {
+    "id": "doc-002",
+    "categoria": "governanca",
+    "titulo": "Política de Governança de Dados",
+    "texto": "As análises devem utilizar fontes homologadas. Consultas manuais fora do pipeline aprovado exigem justificativa."
+  },
+  {
+    "id": "doc-003",
+    "categoria": "compliance",
+    "titulo": "Política de Compliance Analítico",
+    "texto": "Dados pessoais não devem ser expostos em consultas agregadas sem base legal e sem mascaramento adequado."
+  },
+  {
+    "id": "doc-004",
+    "categoria": "retencao",
+    "titulo": "Política de Retenção de Dados",
+    "texto": "Os dados históricos críticos devem ser mantidos conforme a política corporativa vigente e a classificação da informação."
+  }
+]

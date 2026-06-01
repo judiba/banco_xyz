@@ -1,0 +1,8 @@
+[
+    {"mes": "Jan", "usuarios_ativos": 65200000, "churn": 2.1, "share_ibope": 14.5},
+    {"mes": "Fev", "usuarios_ativos": 64800000, "churn": 2.3, "share_ibope": 14.2},
+    {"mes": "Mar", "usuarios_ativos": 68500000, "churn": 1.8, "share_ibope": 15.8},
+    {"mes": "Abr", "usuarios_ativos": 69100000, "churn": 1.7, "share_ibope": 16.1},
+    {"mes": "Mai", "usuarios_ativos": 72300000, "churn": 1.5, "share_ibope": 17.4},
+    {"mes": "Jun", "usuarios_ativos": 70800000, "churn": 1.6, "share_ibope": 16.8}
+]

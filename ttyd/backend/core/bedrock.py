@@ -1,0 +1,1 @@
+from backend.app_config.bedrock import get_bedrock_runtime as get_bedrock_runtime

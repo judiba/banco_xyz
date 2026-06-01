@@ -1,0 +1,435 @@
+tabelas:
+  agg_cadastro_source:
+    descricao: Tabela de origem dos cadastros do ecossistema Record, contendo o identificador único do usuário, o canal ou produto de origem e a data em que o cadastro foi realizado. Deve ser utilizada para análises de aquisição, origem de usuários e evolução de cadastros por fonte.
+    colunas:
+    - nome: idunico
+      descricao: Identificador único do usuário no ecossistema Record, baseado em e-mail e/ou CPF.
+    - nome: origem
+      descricao: 'produto, plataforma ou canal de origem do cadastro, armazenado conforme os valores textuais padronizados da base. Exemplos observados: recordplus, r7, mrp, forms, r7 cupons'
+    - nome: dt_cadastro
+      descricao: Data em que o usuário realizou o cadastro na respectiva origem.
+  agg_evolucao_cadastral:
+    descricao: Contém dados históricos desde o início de 2022 e monitora o crescimento da base,  detalhando quantos usuários novos entraram e quantos são duplicados  (uma mesma pessoa com cadastros em produtos diferentes, como R7 e PlayPlus). Deve ser utilizada para análises de crescimento da base, comparação entre cadastros brutos e únicos e avaliação de impacto de campanhas no volume de entrada. Não deve ser usada para análises comportamentais ou consultas em nível de usuário.
+    colunas:
+    - nome: data_cadastro
+      descricao: Representa a data do primeiro cadastro do usuário no sistema de origem
+    - nome: qtd_cadastros_novos
+      descricao: Quantidade total de novos cadastros brutos realizados naquela data e origem, sem considerar se o usuário já existia em outro produto
+    - nome: qtd_cadastros
+      descricao: Volume total acumulado de cadastros registrados para a origem específica até aquela data
+    - nome: origem
+      descricao: 'produto, plataforma ou canal de origem do cadastro, armazenado conforme os valores textuais padronizados da base: recordplus, r7, mrp, forms, r7 cupons. Letras minúsculas.'
+    - nome: qtd_cadastros_novos_dedup
+      descricao: Quantidade de novos idunicos que entraram na base; se uma mesma pessoa se cadastrar em dois produtos, ela é contabilizada apenas uma vez aqui
+    - nome: qtd_cadastros_dedup
+      descricao: Total de usuários únicos e distintos na base consolidada da Record, eliminando as duplicidades entre plataformas.
+    - nome: create_date
+      descricao: campo padrão de partição que indica a data em que o dado foi processado pelo Job EMR para compor a tabela agregada. O valor é armazenado no formato YYYYMMDD, por exemplo '20250401'
+  agg_user:
+    descricao: Base consolidada de usuários do PlayPlus com uma linha por idunico, contendo dados cadastrais, demográficos, socioeconômicos, geográficos e flags como active_user e flag_pagante. É a principal dimensão de usuários do PlayPlus e deve ser utilizada para análises de perfil demográfico, segmentações por renda, classe social, idade ou região, identificação de usuários ativos e cruzamento com dados de consumo. Não deve ser utilizada para análise de eventos de navegação ou sessões detalhadas.
+    colunas:
+    - nome: idunico
+      descricao: Identificador único do usuário no ecossistema Record.
+    - nome: genero
+      descricao: Gênero do usuário obtido via cadastro ou enriquecimento.
+    - nome: faixa_etaria
+      descricao: 'Faixa etária categorizada do usuário (ex: 25-34 anos).'
+    - nome: idade
+      descricao: Idade numérica do usuário calculada com base na data de nascimento.
+    - nome: score_credito
+      descricao: Score de crédito do usuário fornecido por parceiro de enriquecimento.
+    - nome: classe_social
+      descricao: Classe social estimada com base em dados socioeconômicos.
+    - nome: renda_presumida
+      descricao: Faixa estimada de renda do usuário.
+    - nome: escolaridade_descricao
+      descricao: Descrição do nível de escolaridade do usuário.
+    - nome: cidade
+      descricao: Cidade de residência informada ou enriquecida.
+    - nome: estado
+      descricao: 'Unidade federativa associada ao usuário, registrada por nome por extenso na base. Exemplos de valores observados: Sao Paulo, Rio De Janeiro, Minas Gerais, Bahia, Parana, Distrito Federal. Sem acento'
+    - nome: regiao
+      descricao: Região geográfica do Brasil correspondente ao estado.
+    - nome: data_cadastro
+      descricao: data do primeiro cadastro do usuário no PlayPlus/RecordPlus. Para análises temporais de evolução nesta tabela, este é o campo de data preferencial quando definido pela regra de negócio (MAUS e DAUS).
+    - nome: flag_pagante
+      descricao: 'Flag booleana indicando o status financeiro do usuário. Valores válidos: 1 para usuário assinante/pagante ativo, 0 para usuário free/gratuito.'
+    - nome: faixa_etaria_order
+      descricao: Campo numérico auxiliar para ordenação correta das faixas etárias em dashboards.
+    - nome: score_credito_order
+      descricao: Campo numérico auxiliar para ordenação dos níveis de score de crédito.
+    - nome: renda_presumida_order
+      descricao: Campo numérico auxiliar para ordenação crescente das faixas de renda.
+    - nome: escolaridade_descricao_order
+      descricao: Campo numérico auxiliar para ordenação hierárquica da escolaridade.
+    - nome: active_user
+      descricao: 'Flag numérica indicando se o usuário consumiu conteúdo nos últimos 30 dias. Valores válidos: 1 para usuário ativo, 0 para inativo.'
+    - nome: create_date
+      descricao: Data de processamento da tabela e campo de partição do snapshot. O valor é armazenado no formato YYYYMMDD, por exemplo '20250401'
+  agg_user_r7:
+    descricao: Base agregada de usuários cadastrados no portal R7, com uma linha por idunico, contendo informações demográficas e status de atividade (usuário ativo nos últimos 30 dias). Deve ser utilizada para análise de perfil da base do R7, segmentações demográficas e identificação de usuários ativos no portal. Não deve ser usada para análise detalhada de navegação ou dados do PlayPlus.
+    colunas:
+    - nome: idunico
+      descricao: Identificador único do usuário.
+    - nome: genero
+      descricao: Gênero do usuário.
+    - nome: faixa_etaria
+      descricao: Faixa etária categorizada.
+    - nome: score_credito
+      descricao: Score de crédito enriquecido.
+    - nome: classe_social
+      descricao: Classe social estimada.
+    - nome: renda_presumida
+      descricao: Faixa de renda estimada.
+    - nome: escolaridade_descricao
+      descricao: Nível de escolaridade.
+    - nome: cidade
+      descricao: Cidade de cadastro.
+    - nome: estado
+      descricao: 'Unidade federativa associada ao usuário, registrada por nome por extenso na base. Exemplos de valores observados: Sao Paulo, Rio De Janeiro, Minas Gerais, Bahia, Parana, Distrito Federal. Sem acento'
+    - nome: regiao
+      descricao: Região geográfica do usuário.
+    - nome: data_cadastro
+      descricao: Data do cadastro no portal R7.
+    - nome: faixa_etaria_order
+      descricao: Ordenação da faixa etária.
+    - nome: score_credito_order
+      descricao: Ordenação do score de crédito.
+    - nome: renda_presumida_order
+      descricao: Ordenação da renda presumida.
+    - nome: escolaridade_descricao_order
+      descricao: Ordenação da escolaridade.
+    - nome: active_user
+      descricao: 'Indica se o usuário está ativo nos últimos 30 dias. Valores válidos: 1 para ativo, 0 para inativo.'
+    - nome: create_date
+      descricao: Data de processamento da tabela. O valor é armazenado no formato YYYYMMDD, por exemplo '20250401'
+  agg_catraca:
+    descricao: 'Identifica a origem do cadastro do usuário do portal R7, ou seja, por qual página ou editoria  (ex: newsletter) ele entrou no ecossistema da Record antes de se cadastrar. Ela é composta basicamente por IDs vindos do portal R7 e dados de navegação como URL completa da página  onde o usuário estava no momento da interação que precedeu o cadastro, sessão, editoria, campanha e origem de tráfego que antecederam o cadastro do usuário. É a principal tabela para análise de conversão e funil de aquisição, permitindo identificar quais editorias, URLs ou campanhas geraram cadastros.'
+    colunas:
+    - nome: idunico
+      descricao: Chave primária de identificação única do usuário baseada em e-mail e/ou CPF.
+    - nome: page_location
+      descricao: URL completa da página onde o usuário estava no momento da interação que precedeu o cadastro.
+    - nome: event_date
+      descricao: Data e hora exata em que o evento de interação foi registrado pelo Google Analytics.
+    - nome: event_name
+      descricao: 'Nome do evento capturado (ex: session_start, click, page_view).'
+    - nome: data_cadastro
+      descricao: Data e hora em que o cadastro do usuário foi efetivado na plataforma de origem.
+    - nome: session_manual_medium
+      descricao: 'Meio de tráfego da sessão (ex: orgânico, cpc, e-mail), tratado manualmente para análise.'
+    - nome: session_manual_source
+      descricao: 'Fonte de origem do tráfego (ex: google, facebook, instagram).'
+    - nome: session_manual_campaign_name
+      descricao: Nome da campanha de marketing associada à sessão do usuário.
+    - nome: session_manual_content
+      descricao: Identificação do conteúdo específico da campanha que gerou o acesso.
+    - nome: editoria_n1_manual
+      descricao: Primeiro nível da editoria extraído via Regex da URL para padronização e limpeza dos dados.
+    - nome: editoria_n2_manual
+      descricao: Segundo nível da editoria tratado manualmente.
+    - nome: editoria_n3_manual
+      descricao: Terceiro nível da editoria tratado manualmente, geralmente com maior variabilidade.
+    - nome: editoria_n1
+      descricao: Primeiro nível da editoria extraído automaticamente pelo fornecedor (White Cherry) a partir da URL.
+    - nome: editoria_n2
+      descricao: Segundo nível da editoria extraído automaticamente pelo fornecedor.
+    - nome: editoria_n3
+      descricao: Terceiro nível da editoria extraído automaticamente pelo fornecedor.
+    - nome: editoria_n1_dl
+      descricao: Primeiro nível da editoria proveniente do Data Layer do site, considerado menos confiável.
+    - nome: editoria_n2_dl
+      descricao: Segundo nível da editoria extraído do Data Layer.
+    - nome: editoria_n3_dl
+      descricao: Terceiro nível da editoria extraído do Data Layer.
+  agg_ga:
+    descricao: Tabela agregada por idunico, data e URL contendo a quantidade de acessos ao portal R7 provenientes do Google Analytics. Deve ser utilizada para análises de volume de acessos por URL, frequência de acesso por usuário e métricas agregadas simples de tráfego.
+    colunas:
+    - nome: idunico
+      descricao: Identificador único do usuário no ecossistema Record.
+    - nome: date
+      descricao: Data em que ocorreu o acesso.
+    - nome: url
+      descricao: URL acessada pelo usuário.
+    - nome: qtd_acessos
+      descricao: Quantidade de acessos realizados pelo usuário na URL e data informadas.
+  agg_r7:
+    descricao: Base detalhada de consumo do portal R7 (GA4), contendo dados comportamentais, editoriais, geográficos, tecnológicos e demográficos enriquecidos. É a principal tabela para análise comportamental no portal, permitindo avaliar navegação por editoria, dispositivo, localização e perfil demográfico. Não deve ser utilizada quando a necessidade for apenas volume histórico mensal consolidado.
+    colunas:
+    - nome: idunico
+      descricao: Chave primária de identificação única do usuário no ecossistema Record.
+    - nome: genero
+      descricao: Gênero do usuário obtido majoritariamente via enriquecimento.Feminino ou Masculino.
+    - nome: faixa_etaria
+      descricao: 'Faixa etária do usuário (ex: 25-34 anos).'
+    - nome: classe_social
+      descricao: Classe social estimada com base em dados socioeconômicos.
+    - nome: score_credito
+      descricao: Pontuação de crédito do usuário fornecida por parceiro de enriquecimento.
+    - nome: escolaridade_descricao
+      descricao: Nível de escolaridade do usuário.
+    - nome: renda_presumida
+      descricao: Estimativa de renda do usuário.
+    - nome: active_user
+      descricao: 'Flag numérica utilizada para identificar e contar usuários ativos no período do dashboard. Valores válidos: 1 para usuário ativo, 0 para inativo.'
+    - nome: event_date
+      descricao: Data em que o evento de consumo ocorreu no portal R7, rastreado pelo GA.
+    - nome: hour_event_date
+      descricao: Valor numérico da hora (0-23) em que o evento ocorreu, para análise de picos de tráfego.
+    - nome: page_title
+      descricao: Título da página web que o usuário acessou no momento do evento.
+    - nome: event_name
+      descricao: nome do evento capturado na navegação do portal R7. Exemplos documentados incluem page_view, click e session_start. Não assumir a existência de outros valores
+    - nome: page_location
+      descricao: URL completa da página acessada pelo usuário no portal.
+    - nome: editoria_n1_manual
+      descricao: 'Primeira editoria da URL (ex: notícias), tratada manualmente via regex para maior limpeza, conteúdo da coluna: record, r7, esportes, noticias, entretenimento, estudio, tempo, r7 apps, busca, recordtv, interacao, eleicoes, afazenda, canaa, newsletters e oscar.'
+    - nome: editoria_n2_manual
+      descricao: 'Segunda editoria da URL (ex: esportes), tratada manualmente pela engenharia de dados.'
+    - nome: editoria_n3_manual
+      descricao: Terceira editoria da URL, campo tratado para identificar subeditorias específicas.
+    - nome: editoria_n1_dl
+      descricao: Editoria N1 capturada diretamente da Data Layer do site (pode ser menos confiável que a manual).
+    - nome: editoria_n2_dl
+      descricao: Editoria N2 capturada via Data Layer do site.
+    - nome: editoria_n3_dl
+      descricao: Editoria N3 capturada via Data Layer do site.
+    - nome: cidade_consumo
+      descricao: Cidade onde o usuário estava no momento do acesso, identificada via IP.
+    - nome: pais_consumo
+      descricao: País de origem do acesso.
+    - nome: device_web_hostname
+      descricao: 'Hostname ou domínio do dispositivo utilizado para acessar o portal web. Conteúdo da coluna: record.r7.com, www.r7.com, esportes.r7.com, noticias.r7.com, afazenda.r7.com, eleicoes.r7.com, tempo.r7.com'
+    - nome: dispositivo
+      descricao: Categoria do dispositivo utilizado (mobile, desktop, tablet ou smart tv).
+    - nome: navegador
+      descricao: Navegador utilizado pelo usuário (Andoid, Windows, iOS, Linux, Macintosh, Chrome OS, Tizen ou Playstation 4).
+    - nome: estado
+      descricao: 'Unidade federativa associada ao usuário, registrada por nome por extenso na base. Exemplos de valores observados: Sao Paulo, Rio De Janeiro, Minas Gerais, Bahia, Parana, Distrito Federal. Sem acento'
+  agg_r7_hist:
+    descricao: Tabela histórica agregada mensal contendo o volume total de eventos page_view no portal R7. Deve ser utilizada para análises macro de tendência histórica e construção de séries temporais consolidadas. Não é adequada para segmentações detalhadas ou análises por usuário.
+    colunas:
+    - nome: ano
+      descricao: Ano de referência dos acessos.
+    - nome: mes
+      descricao: Mês de referência dos acessos.
+    - nome: qtd
+      descricao: Quantidade total de eventos page_view registrados no período.
+  pp_cc_live:
+    descricao: Base detalhada de consumo de conteúdo ao vivo (Live) do PlayPlus, com dados de sessão e enriquecimento demográfico do usuário. Contém informações como minutos assistidos, dispositivo, sinal e horário de consumo. Deve ser utilizada para análises de consumo de TV ao vivo, tempo médio por programa, segmentação por perfil demográfico e avaliação de comportamento de usuários pagantes.
+    colunas:
+    - nome: idunico
+      descricao: Identificador único do usuário no ecossistema Record.
+    - nome: genero
+      descricao: Gênero do usuário.
+    - nome: faixa_etaria
+      descricao: Faixa etária categorizada do usuário.
+    - nome: score_credito
+      descricao: Score de crédito enriquecido do usuário.
+    - nome: classe_social
+      descricao: Classe social estimada do usuário.
+    - nome: renda_presumida
+      descricao: Faixa de renda presumida do usuário.
+    - nome: escolaridade_descricao
+      descricao: Nível de escolaridade do usuário.
+    - nome: cidade
+      descricao: Cidade de cadastro do usuário.
+    - nome: estado
+      descricao: 'Unidade federativa associada ao usuário, registrada por nome por extenso na base. Exemplos de valores observados: Sao Paulo, Rio De Janeiro, Minas Gerais, Bahia, Parana, Distrito Federal. Sem acento'
+    - nome: regiao
+      descricao: Região geográfica do usuário.
+    - nome: data_cadastro
+      descricao: Data de cadastro do usuário no PlayPlus.
+    - nome: flag_pagante
+      descricao: 'Indica se o usuário era assinante pagante no momento do consumo: Flag identificadora de acessos premium. Valores válidos: 1 se o consumo de vídeo foi feito por uma conta pagante, 0 caso contrário.'
+    - nome: faixa_etaria_order
+      descricao: Campo numérico auxiliar para ordenação correta da faixa etária.
+    - nome: score_credito_order
+      descricao: Campo numérico auxiliar para ordenação do score de crédito.
+    - nome: renda_presumida_order
+      descricao: Campo numérico auxiliar para ordenação da renda presumida.
+    - nome: escolaridade_descricao_order
+      descricao: Campo numérico auxiliar para ordenação da escolaridade.
+    - nome: active_user
+      descricao: 'Indica se o usuário consumiu conteúdo nos últimos 30 dias. Valores válidos: 1 se consumiu, 0 caso contrário.'
+    - nome: data_inicio_consumo
+      descricao: Data de início da sessão de consumo.
+    - nome: data_fim_consumo
+      descricao: Data de término da sessão de consumo.
+    - nome: minutos_sessao
+      descricao: Quantidade de minutos consumidos na sessão, arredondado para três casas decimais.
+    - nome: deviceos
+      descricao: 'sistema operacional, fabricante ou tipo de ambiente do dispositivo usado no consumo. Os valores desta coluna são padronizados conforme o dado recebido da plataforma e devem ser usados exatamente como existem na base: Android, Samsung, Web, LG, Ios, Unknown, TV.'
+    - nome: media_title
+      descricao: Título da programação assistida.
+    - nome: hora_incio_consumo
+      descricao: Hora do dia em que o consumo foi iniciado.
+    - nome: sinal
+      descricao: Identificação do sinal da programação ao vivo assistida.
+    - nome: create_date
+      descricao: Data de processamento dos dados.. O valor é armazenado no formato YYYYMMDD, por exemplo '20250401'
+  pp_cc_vod:
+    descricao: Base detalhada de consumo de conteúdo sob demanda (VOD) do PlayPlus, contendo dados de sessão e perfil demográfico do usuário. Deve ser utilizada para análises de consumo por título, retenção por gênero, segmentação demográfica e avaliação de performance de conteúdos sob demanda.
+    colunas:
+    - nome: idunico
+      descricao: Identificador único do usuário.
+    - nome: genero
+      descricao: Gênero do usuário.
+    - nome: faixa_etaria
+      descricao: Faixa etária categorizada.
+    - nome: score_credito
+      descricao: Score de crédito enriquecido.
+    - nome: classe_social
+      descricao: Classe social estimada.
+    - nome: renda_presumida
+      descricao: Faixa de renda presumida.
+    - nome: escolaridade_descricao
+      descricao: Nível de escolaridade.
+    - nome: cidade
+      descricao: Cidade de cadastro.
+    - nome: estado
+      descricao: 'Unidade federativa associada ao usuário, registrada por nome por extenso na base. Exemplos de valores observados: Sao Paulo, Rio De Janeiro, Minas Gerais, Bahia, Parana, Distrito Federal. Sem acento'
+    - nome: regiao
+      descricao: Região geográfica.
+    - nome: data_cadastro
+      descricao: Data de cadastro do usuário.
+    - nome: flag_cc_live
+      descricao: 'Indicador de transmissão em tempo real. Valores válidos: 1 para conteúdo originado de transmissão ao vivo (Live CC), 0 para conteúdo gravado ou sob demanda (VOD).'
+    - nome: flag_pagante
+      descricao: 'Flag identificadora de acessos premium. Valores válidos: 1 se o consumo de vídeo foi feito por uma conta pagante, 0 caso contrário.'
+    - nome: faixa_etaria_order
+      descricao: Campo auxiliar para ordenação da faixa etária.
+    - nome: score_credito_order
+      descricao: Campo auxiliar para ordenação do score de crédito.
+    - nome: renda_presumida_order
+      descricao: Campo auxiliar para ordenação da renda.
+    - nome: escolaridade_descricao_order
+      descricao: Campo auxiliar para ordenação da escolaridade.
+    - nome: active_user
+      descricao: 'Indica se o usuário está ativo nos últimos 30 dias. Valores válidos: 1 para ativo, 0 para inativo.'
+    - nome: data_inicio_consumo
+      descricao: Data de início do consumo.
+    - nome: data_fim_consumo
+      descricao: Data de fim do consumo.
+    - nome: minutos_sessao
+      descricao: Quantidade de minutos consumidos na sessão.
+    - nome: deviceos
+      descricao: Sistema operacional ou tipo de dispositivo utilizado.
+    - nome: media_title
+      descricao: Título do conteúdo assistido.
+    - nome: genre
+      descricao: Gênero do conteúdo consumido.
+    - nome: hora_incio_consumo
+      descricao: Hora de início da sessão de consumo.
+    - nome: sinal
+      descricao: Nome do sinal/canal/feed da programação ao vivo assistida. Valores típicos incluem afiliadas da Record e sinais de eventos/programas ao vivo, como Record Sp, Record Rio, Record Bahia, Record News, Sinal 1 - A Fazenda, Sinal 2 - Power Couple, Brasileirão 2025.
+    - nome: create_date
+      descricao: Data de processamento da tabela. O valor é armazenado no formato YYYYMMDD, por exemplo '20250401'
+  pp_aud_live:
+    descricao: Tabela de audiência Live com dados detalhados de sessão, focada em métricas técnicas de consumo como timestamps de início e fim e duração da sessão, sem enriquecimento demográfico completo. Deve ser utilizada para cálculos técnicos de tempo assistido e análises operacionais de consumo ao vivo.
+    colunas:
+    - nome: idunico
+      descricao: Identificador único do usuário.
+    - nome: estado
+      descricao: 'Unidade federativa associada ao usuário, registrada por nome por extenso na base. Exemplos de valores observados: Sao Paulo, Rio De Janeiro, Minas Gerais, Bahia, Parana, Distrito Federal. Sem acento'
+    - nome: data_inicio_consumo
+      descricao: Data de início do consumo.
+    - nome: timestamp_inicio_consumo
+      descricao: Data e hora exata de início do consumo.
+    - nome: data_fim_consumo
+      descricao: Data de término do consumo.
+    - nome: timestamp_fim_consumo
+      descricao: Data e hora exata de término do consumo.
+    - nome: minutos_sessao
+      descricao: Quantidade total de minutos consumidos.
+    - nome: millisecond_sessao
+      descricao: Duração total da sessão em milissegundos.
+    - nome: media_title
+      descricao: Título da programação assistida.
+    - nome: genre
+      descricao: Gênero do conteúdo (quando aplicável).
+    - nome: flag_origin
+      descricao: 'Indicador da origem do sinal de transmissão de áudio. Valores válidos: 1 para sinal originado internamente (Origin Server), 0 para tráfego via CDN/externo.'
+    - nome: hora_incio_consumo
+      descricao: Hora do dia em que o consumo foi iniciado.
+    - nome: periodo_dia
+      descricao: 'Classificação do período do dia (ex: manhã, tarde, noite, madrugada).'
+    - nome: sinal
+      descricao: Identificação do sinal ao vivo consumido.
+    - nome: create_date
+      descricao: Data de processamento da tabela. O valor é armazenado no formato YYYYMMDD, por exemplo '20250401'
+  pp_aud_vod:
+    descricao: Tabela de audiência VOD com dados técnicos detalhados de sessão, incluindo início, fim e duração do consumo. utilizada para alimentar os dashboards  de audiência de conteúdos gravados (VOD - Video On Demand) do PlayPlus.  Ela consolida logs de consumo histórico para identificar o comportamento dos usuários ao assistir filmes, séries e episódios de programas.
+    colunas:
+    - nome: idunico
+      descricao: Identificador único do usuário.
+    - nome: estado
+      descricao: 'Unidade federativa associada ao usuário, registrada por nome por extenso na base. Exemplos de valores observados: Sao Paulo, Rio De Janeiro, Minas Gerais, Bahia, Parana, Distrito Federal. Sem acento'
+    - nome: data_inicio_consumo
+      descricao: Data em que o usuário iniciou a reprodução do conteúdo VOD
+    - nome: timestamp_inicio_consumo
+      descricao: Registro exato de data e hora (log time in) do início da sessão de consumo
+    - nome: data_fim_consumo
+      descricao: Data em que o usuário encerrou a reprodução do conteúdo
+    - nome: timestamp_fim_consumo
+      descricao: Registro exato de data e hora (log time) do término da sessão de consumo
+    - nome: minutos_sessao
+      descricao: Tempo total de consumo daquela sessão convertido para minutos. No BI, costuma-se filtrar sessões acima de 2 minutos para métricas de engajamento
+    - nome: millisecond_sessao
+      descricao: Duração bruta da sessão em milissegundos, extraída dos logs do fornecedor
+    - nome: media_title
+      descricao: 'Título do conteúdo consumido. O processo busca unificar episódios sob o título principal do programa (ex: A Fazenda) usando a lógica de parent_id'
+    - nome: genre
+      descricao: 'Gênero do conteúdo assistido (ex: Novela, Documentário, Reality Show)'
+    - nome: flag_origin
+      descricao: 'Flag de controle de armazenamento de áudio sob demanda. Valores válidos: 1 para arquivo armazenado no servidor de origem, 0 para cache local ou borda.'
+    - nome: hora_incio_consumo
+      descricao: Valor numérico da hora de início, facilitando análises de faixas horárias de maior consumo no dashboard
+    - nome: periodo_dia
+      descricao: Classificação do horário em períodos (Manhã, Tarde, Noite, Madrugada)
+    - nome: sinal
+      descricao: Campo padrão do modelo (aplicável principalmente a Live).
+    - nome: create_date
+      descricao: Indica a data de processamento pelo Job Spark; funciona como chave de partição da tabela. O valor é armazenado no formato YYYYMMDD, por exemplo '20250401'
+  agg_profile:
+    descricao: Tabela auxiliar contendo idunico e nome_formatado, utilizada para enriquecimento simples de identificação do perfil do usuário. Deve ser usada apenas para complementar informações básicas de identificação, não sendo adequada para análises demográficas ou comportamentais.
+    colunas:
+    - nome: idunico
+      descricao: Identificador único do usuário.
+    - nome: nome_formatado
+      descricao: Nome do usuário formatado para exibição.
+  agg_user_mrp:
+    descricao: Base histórica agregada de usuários do extinto produto Mundo Record de Prêmios (MRP), contendo dados demográficos e cadastrais para análises retroativas. Deve ser utilizada apenas para análises históricas relacionadas ao MRP ou comparações com outras bases.
+    colunas:
+    - nome: idunico
+      descricao: Identificador único do usuário.
+    - nome: genero
+      descricao: Gênero do usuário.
+    - nome: faixa_etaria
+      descricao: Faixa etária categorizada.
+    - nome: score_credito
+      descricao: Score de crédito enriquecido.
+    - nome: classe_social
+      descricao: Classe social estimada.
+    - nome: renda_presumida
+      descricao: Faixa de renda presumida.
+    - nome: escolaridade_descricao
+      descricao: Nível de escolaridade.
+    - nome: cidade
+      descricao: Cidade de cadastro.
+    - nome: estado
+      descricao: 'Unidade federativa associada ao usuário, registrada por nome por extenso na base. Exemplos de valores observados: Sao Paulo, Rio De Janeiro, Minas Gerais, Bahia, Parana, Distrito Federal. Sem acento'
+    - nome: regiao
+      descricao: Região geográfica.
+    - nome: data_cadastro
+      descricao: Data de cadastro do usuário.
+    - nome: faixa_etaria_order
+      descricao: Campo auxiliar para ordenação da faixa etária.
+    - nome: score_credito_order
+      descricao: Campo auxiliar para ordenação do score de crédito.
+    - nome: renda_presumida_order
+      descricao: Campo auxiliar para ordenação da renda.
+    - nome: escolaridade_descricao_order
+      descricao: Campo auxiliar para ordenação da escolaridade.
+    - nome: create_date
+      descricao: Data de processamento da tabela. O valor é armazenado no formato YYYYMMDD, por exemplo '20250401'

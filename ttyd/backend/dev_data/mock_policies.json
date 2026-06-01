@@ -1,0 +1,15 @@
+[
+  {
+    "titulo": "Política de Segurança da Informação",
+    "texto": "O acesso a dados sensíveis deve respeitar o princípio do menor privilégio."
+  },
+  {
+    "titulo": "Política de Governança de Dados",
+    "texto": "Toda consulta analítica deve utilizar fontes homologadas e rastreáveis."
+  },
+  {
+    "titulo": "Política de Retenção",
+    "texto": "Os dados históricos críticos devem ser mantidos conforme a política corporativa vigente."
+  }
+]
+

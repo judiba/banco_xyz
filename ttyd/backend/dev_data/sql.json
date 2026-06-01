@@ -1,0 +1,22 @@
+[
+  {
+    "pergunta": "quantos usuários ativos temos",
+    "sql_exemplo": "select usuarios_ativos from mock_users order by mes desc limit 1",
+    "descricao": "Retorna o total de usuários ativos do último mês"
+  },
+  {
+    "pergunta": "qual a receita por mês",
+    "sql_exemplo": "select mes, receita, ticket_medio from mock_sales order by mes",
+    "descricao": "Retorna a evolução mensal da receita"
+  },
+  {
+    "pergunta": "qual canal converte mais",
+    "sql_exemplo": "select canal, conversoes, taxa_conversao from mock_metrics order by conversoes desc",
+    "descricao": "Retorna o desempenho por canal"
+  },
+  {
+    "pergunta": "quantos pedidos tivemos",
+    "sql_exemplo": "select mes, pedidos from mock_sales order by mes",
+    "descricao": "Retorna a evolução mensal de pedidos"
+  }
+]

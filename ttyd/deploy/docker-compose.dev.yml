@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile.dev
+    env_file:
+      - ../security/.env.dev
+    environment:
+      APP_ENV: dev
+      DEV_OFFLINE: "true"
+      JWT_SECRET: ttyd-dev-secret
+      ASSISTANT_DISPLAY_NAME: RecordAI
+      # SAML local (IdP Record) — preencher em security/.env.dev; ver docs/SAML_AD_RECORD.md
+      APP_AUTH_SAML_ENABLED: ${APP_AUTH_SAML_ENABLED:-false}
+      APP_AUTH_SAML_SP_ENTITY_ID: ${APP_AUTH_SAML_SP_ENTITY_ID:-http://localhost:8000/v1/auth/saml/metadata}
+      APP_AUTH_SAML_SP_ACS_URL: ${APP_AUTH_SAML_SP_ACS_URL:-http://localhost:8000/v1/auth/saml/callback}
+      APP_AUTH_SAML_FRONTEND_LOGIN_URL: ${APP_AUTH_SAML_FRONTEND_LOGIN_URL:-http://localhost:4200/login}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../backend:/app/backend

@@ -1,0 +1,18 @@
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile.local
+    env_file:
+      - ../security/.env.local
+    environment:
+      APP_ENV: local
+      DEV_OFFLINE: "false"
+      AWS_PROFILE: ${AWS_PROFILE:-default}
+    ports:
+      - "8000:8000"
+    volumes:
+      # Credenciais AWS da máquina host (~/.aws/credentials + config)
+      - ${HOME}/.aws:/root/.aws:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

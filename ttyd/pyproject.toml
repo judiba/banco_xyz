@@ -1,0 +1,99 @@
+[tool.poetry]
+name = "talktoyourdata"
+version = "19.0.0"
+description = "TTYD - Talk To Your Data"
+authors = ["Squad Estratégia Digital e CRM"]
+readme = "README.md"
+packages = [
+  { include = "app", from = "backend" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+fastapi = ">=0.115,<1.0"
+uvicorn = ">=0.34.2,<1.0"
+pydantic = "^2.8"
+pydantic-settings = "^2.4"
+python-dotenv = "^1.0"
+httpx = "^0.28.1"
+boto3 = "^1.35"
+botocore = "^1.35"
+msal = "^1.36.0"
+python-jose = { extras = ["cryptography"], version = "^3.3" }
+passlib = { extras = ["bcrypt"], version = "^1.7" }
+python-multipart = "^0.0.18"
+python3-saml = ">=1.16.0"
+lxml = ">=4.9.0"
+pyyaml = "^6.0.3"
+strands-agents = "*"
+strands-agents-tools = "*"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8"
+pytest-asyncio = "^0.24"
+pytest-mock = "^3.14"
+ruff = "^0.6"
+mypy = "^1.11"
+watchfiles = "^0.22"
+ipython = "^8"
+rich = "^13"
+
+[tool.poetry.group.mock.dependencies]
+moto = "^5"
+faker = "^28"
+
+[tool.poetry.group.database.dependencies]
+sqlalchemy = "^2"
+psycopg2-binary = "^2.9"
+python-jose = { extras = ["cryptography"], version = "^3.3" }
+passlib = { extras = ["bcrypt"], version = "^1.7" }
+
+[tool.poetry.group.vector.dependencies]
+faiss-cpu = "^1.8"
+
+[tool.poetry.group.ingestion.dependencies]
+pypdf = "^4"
+python-docx = "^1"
+
+[tool.poetry.group.agentcore.dependencies]
+bedrock-agentcore = "^1.7"
+strands-agents = "*"
+strands-agents-tools = "*"
+
+[tool.poetry.group.memory.dependencies]
+langchain-community = "^0.3"
+
+[tool.poetry.group.prod.dependencies]
+gunicorn = "^22"
+uvloop = "^0.19"
+
+[tool.poetry.scripts]
+generate-readme = "scripts.generate_readme:main"
+generate-environments = "scripts.generate_environments:main"
+
+[tool.pytest.ini_options]
+testpaths = [
+  "tests/backend",
+]
+markers = [
+  "mock: testes offline para o ambiente dev",
+  "aws_real: testes que usam AWS real e só devem rodar no ambiente local"
+]
+asyncio_mode = "auto"
+
+filterwarnings = [
+    "ignore::DeprecationWarning:importlib._bootstrap",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+strict = false
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

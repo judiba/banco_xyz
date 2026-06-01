@@ -1,0 +1,18 @@
+# ============================================================
+# TTYD — local.tfvars.example
+# Copie para local.tfvars e preencha os valores reais.
+# ============================================================
+
+environment  = "local"
+aws_region   = "us-east-1"
+project      = "ttyd"
+
+dynamodb_table_name  = "ttyd-chat-history-local"
+dynamodb_ttl_seconds = 28800
+
+ecr_repo_name = "ttyd-local"
+
+redshift_lambda_arn_big_data  = "arn:aws:lambda:us-east-1:ACCOUNT_ID:function:NAME"
+redshift_lambda_arn_id_unico  = "arn:aws:lambda:us-east-1:ACCOUNT_ID:function:NAME"
+rag_s3_bucket                 = "ttyd-rag-documents-local"
+glue_database_name            = "ttyd_catalog_local"
