@@ -1,0 +1,410 @@
+
+@use 'breakpoints' as bp;
+
+/* ==========================================================================
+   LOGIN PAGE
+   - Layout dividido: HERO (branding) + FORM (credenciais)
+   ========================================================================== */
+
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+/* CONTAINER: card principal da tela */
+.login-card {
+  width: 100%;
+  min-height: 100%;
+  background: #ffffff;
+  border-radius: 2px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+
+/* HERO: bloco de apresentação/branding (fundo + imagens) */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 28px;
+  border-radius: 18px;
+  overflow: hidden;
+  isolation: isolate;
+  background-color: #0f1a22;
+}
+
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url('/assets/imagem-gemini.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  filter: brightness(50%);
+  
+}
+
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 520px;
+}
+
+
+.hero__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+
+.hero__logo-image {
+  margin: 10px 15px;
+  height: 40px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+
+.hero__headline-image {
+  margin: -10px 15px 0px;
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+
+.hero__logo-mark {
+  flex: 0 0 auto;
+  display: block;
+}
+
+
+.hero__logo-text {
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  font-size: 13px;
+  opacity: 0.95;
+}
+
+
+.hero__title {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.25;
+  letter-spacing: -0.2px;
+}
+
+
+.hero__title strong {
+  font-weight: 800;
+}
+
+
+.hero__subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+
+/* FORM: coluna direita com inputs e botão */
+.form {
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 8px 0 24px;
+}
+
+
+.form__inner {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+.form__header {
+  margin-bottom: 26px;
+  margin-top: 0;
+}
+
+
+.form__title {
+  margin: -20px 0px;
+  color: #171717;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  line-height: 1.15;
+}
+
+
+.form__hint {
+  margin: 30px 0 0;
+  color: #6b6b6b;
+  font-size: 21px;
+}
+
+
+.field {
+  margin-bottom: 16px;
+}
+
+
+.field__label {
+  display: block;
+  margin: 20px 0 8px;
+  color: #161616;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+
+/* INPUT: estilo base dos campos */
+.field__control {
+  width: 100%;
+  height: 42px;
+  padding: 10px 12px;
+  border-radius: 3px;
+  border: 1px solid #e7e7e7;
+  outline: none;
+  font-size: 14px;
+  color: #1a1a1a;
+  background: #ffffff;
+}
+
+
+.field__control::placeholder {
+  color: #9b9b9b;
+}
+
+
+.field__control:focus {
+  border-color: #0000cc;
+  box-shadow: 0 0 0 3px rgba(43, 77, 255, 0.15);
+}
+
+
+.form__error {
+  margin: 12px 0 4px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(201, 11, 11, 0.25);
+  background: rgba(201, 11, 11, 0.08);
+  color: #b00020;
+  font-size: 14px;
+}
+
+
+/* BUTTON: submit do formulário */
+.btn {
+  width: 100%;
+  height: 60px;
+  border-radius: 10px;
+  border: 0;
+  margin-top: 12px;
+  background: #0b14c9;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: filter 0.15s ease, opacity 0.15s ease;
+  box-shadow: 0 10px 22px rgba(11, 20, 201, 0.2);
+}
+
+
+.btn:hover {
+  filter: brightness(1.05);
+}
+
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 18px;
+  color: #8a8a8a;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: lowercase;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1 1 auto;
+    height: 1px;
+    background: #e3e3e3;
+  }
+}
+
+.btn-microsoft {
+  width: 100%;
+  height: 52px;
+  border-radius: 10px;
+  border: 1px solid #8c8c8c;
+  background: #ffffff;
+  color: #1b1b1b;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.btn-microsoft:hover:not(:disabled) {
+  background: #f8f8f8;
+  border-color: #6b6b6b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-microsoft:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.btn-microsoft__logo {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.btn-microsoft__label {
+  line-height: 1;
+}
+
+.form__footer {
+  margin-top: 1px;
+  padding-top: 34px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b6b6b;
+  font-size: 16px;
+  flex-wrap: wrap;
+}
+
+
+.form__footer-brand-logo {
+  height: 26px;
+  margin-top: 5px;
+  margin-left: -10px;
+  width: auto;
+  display: inline-block;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+
+@include bp.down(bp.$bp-md) {
+  .login-card {
+    width: 100%;
+    min-height: 100dvh;
+    padding: 16px;
+    gap: 16px;
+    grid-template-columns: 1fr;
+    box-shadow: none;
+  }
+
+  .hero {
+    min-height: 220px;
+    padding: 22px;
+  }
+
+  .form {
+    padding: 8px 4px 32px;
+  }
+
+  .form__title {
+    font-size: 28px;
+  }
+
+  .form__hint {
+    font-size: 16px;
+  }
+
+  .field__label {
+    font-size: 16px;
+  }
+
+  .btn {
+    height: 52px;
+    font-size: 17px;
+  }
+}
+
+@include bp.down(bp.$bp-sm) {
+  .login-card {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .hero {
+    min-height: 180px;
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .hero__title {
+    font-size: 20px;
+  }
+
+  .hero__subtitle {
+    font-size: 13px;
+  }
+
+  .form__title {
+    font-size: 24px;
+  }
+
+  .form__footer {
+    margin-top: 20px;
+    padding-top: 0;
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,125 @@
+
+
+
+<!-- LOGIN PAGE: container principal -->
+<div class="login-card" role="region" aria-label="Tela de login">
+  <!-- HERO: área visual/branding -->
+  <section class="hero" aria-label="Apresentação">
+    <div class="hero__content">
+      
+      <div class="hero__logo">
+        <img class="hero__logo-image" src="/assets/logo-record-n.png" alt="Record" />
+      </div>
+
+      
+      <img
+        class="hero__headline-image"
+        src="/assets/decisoes-n.png"
+        alt="Decisões estratégicas começam com uma pergunta, Talk to your Data. Um agente inteligente para explorar seus dados"
+      />
+    </div>
+  </section>
+
+  
+  <!-- FORM: área do formulário de login -->
+  <section class="form" aria-label="Acesse sua conta">
+    <div class="form__inner">
+      <!-- FORM HEADER: título e dica -->
+      <header class="form__header">
+        <h1 class="form__title">Acesse sua conta</h1>
+        <p class="form__hint">Use sua conta única da Record</p>
+      </header>
+
+      
+      <!-- FORM BODY: campos + submit -->
+      <form class="form__body" (ngSubmit)="onSubmit()">
+        <!-- FIELD: usuário -->
+        <div class="field">
+          <label class="field__label" for="username">Usuário</label>
+          <input
+            class="field__control"
+            id="username"
+            name="username"
+            type="text"
+            autocomplete="username"
+            placeholder="Digite seu usuário"
+            [(ngModel)]="username"
+            (ngModelChange)="clearError()"
+          />
+        </div>
+
+        
+        <!-- FIELD: senha -->
+        <div class="field">
+          <label class="field__label" for="password">Senha</label>
+          <input
+            class="field__control"
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Digite sua senha"
+            [(ngModel)]="password"
+            (ngModelChange)="clearError()"
+          />
+        </div>
+
+        
+        <!-- ERROR: mensagem de erro de login -->
+        <div class="form__error" *ngIf="loginError()" role="alert" aria-live="polite">
+          {{ loginError() }}
+        </div>
+
+        
+        <!-- SUBMIT: botão de entrar -->
+        <button class="btn" type="submit" [disabled]="!isFormValid() || isSubmitting()">
+          {{ isSubmitting() ? 'Entrando...' : 'Entrar' }}
+        </button>
+      </form>
+
+      <ng-container *ngIf="authSamlEnabled">
+        <div class="login-divider" aria-hidden="true">
+          <span>ou</span>
+        </div>
+
+        <button
+          type="button"
+          class="btn-microsoft"
+          (click)="loginWithMicrosoft()"
+          [disabled]="isSubmitting()"
+          aria-label="Entrar com Microsoft"
+        >
+          <svg
+            class="btn-microsoft__logo"
+            viewBox="0 0 21 21"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <rect x="1" y="1" width="9" height="9" fill="#f25022" />
+            <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
+            <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
+            <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
+          </svg>
+          <span class="btn-microsoft__label">Entrar com Microsoft</span>
+        </button>
+      </ng-container>
+
+      
+      <!-- FOOTER: créditos/links -->
+      <footer class="form__footer">
+        <span>© 2026 NTT DATA - Solução desenvolvida por</span>
+
+        
+        <a
+          class="form__footer-brand-link"
+          href="https://br.nttdata.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Acessar o site da NTT DATA"
+        >
+          <img class="form__footer-brand-logo" src="/assets/logontt-b2.png" alt="NTT DATA" />
+        </a>
+      </footer>
+    </div>
+  </section>
+</div>

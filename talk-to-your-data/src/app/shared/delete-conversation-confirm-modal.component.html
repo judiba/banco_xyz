@@ -1,0 +1,70 @@
+
+<div
+  class="delete-confirm__backdrop"
+  *ngIf="confirm.isOpen()"
+  (click)="close()"
+  role="presentation"
+>
+  <div
+    class="delete-confirm"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Excluir conversa"
+    (click)="$event.stopPropagation()"
+  >
+    <header class="delete-confirm__header">
+      <h2 class="delete-confirm__title">{{ confirm.title() }}</h2>
+
+      <button
+        class="delete-confirm__close"
+        type="button"
+        aria-label="Fechar"
+        (click)="close()"
+      >
+        ×
+      </button>
+    </header>
+
+    <div class="delete-confirm__divider" aria-hidden="true"></div>
+
+    <section class="delete-confirm__body">
+      <p class="delete-confirm__text">
+        {{ confirm.text() }}
+      </p>
+
+      <div class="delete-confirm__warning" *ngIf="confirm.warningText()">
+        <img
+          class="delete-confirm__warning-icon"
+          src="/assets/warning.svg"
+          alt=""
+          aria-hidden="true"
+          width="18"
+          height="18"
+        />
+        <p class="delete-confirm__warning-text">
+          {{ confirm.warningText() }}
+        </p>
+      </div>
+    </section>
+
+    <div class="delete-confirm__divider" aria-hidden="true"></div>
+
+    <footer class="delete-confirm__footer">
+      <button
+        type="button"
+        class="delete-confirm__cancel"
+        (click)="close()"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="delete-confirm__delete"
+        (click)="confirmDelete()"
+      >
+        Excluir
+      </button>
+    </footer>
+  </div>
+</div>

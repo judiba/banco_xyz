@@ -1,4 +1,4 @@
-# 🛠️ TTYD — Guia do Desenvolvedor (NTTData)
+# 🛠️ TTYD — Guia do Desenvolvedor (NTTData) — LEVEL 19
 
 Este guia contém instruções para configurar o ambiente de desenvolvimento usando **VS Code**, **WSL (Ubuntu)** e **Python**.
 
@@ -8,13 +8,13 @@ Este guia contém instruções para configurar o ambiente de desenvolvimento usa
 
 1. **WSL2 (Windows Subsystem for Linux)**: Recomendado Ubuntu 22.04 LTS ou superior.
 2. **Docker Desktop**: Instalado no Windows e configurado para usar o backend do WSL2.
-3. **Python 3.10+**: Instalado dentro do Ubuntu.
+3. **Python 3.10+ (Recomendado 3.12+)**: Instalado dentro do Ubuntu.
 4. **Poetry**: Gerenciador de dependências.
 
 Por motivos de segurança atualize o Docker para a versão abaixo:
 
 ```bash
-docker pull python:3.11.13-slim-bookworm
+docker pull python:3.12-slim
 ```
 
 ---
@@ -98,6 +98,16 @@ O comando `make dev-full` abre uma sessão interativa com múltiplos terminais:
 
 - `Ctrl + b` seguido de `d`: Detach (sai sem fechar).
 - `tmux attach -t ttyd_dev`: Volta para a sessão.
+
+---
+
+## 🛡️ Arquitetura e Pilares de Maturidade — LEVEL 19 (Ambiente DEV)
+
+O ambiente **DEV** opera sob o padrão de maturidade **LEVEL 19 (Observability & Tracing)** do TTYD em modo **Offline/Mock**:
+
+1. **Isolamento de Nuvem**: Todas as chamadas para IA e integrações de banco de dados (S3/DynamoDB) são mockadas localmente ou redirecionadas para containers offline, garantindo velocidade de desenvolvimento sem faturamento ou dependência da rede corporativa da AWS.
+2. **Observabilidade Local**: O tracing de requisições (`X-Correlation-Id`) e a correlação de logs assíncronos via `contextvars` estão ativos e configurados no backend. Você pode inspecionar os logs estruturados gerados nas corrotinas e threads diretamente na saída do terminal (`uvicorn` ou logs do Docker).
+3. **Validação de Sintaxe**: A pipeline de testes locais (`make test-dev`) valida a integridade de sintaxe do código e formatos YAML antes da promoção para os ambientes integrados de nuvem.
 
 ---
 

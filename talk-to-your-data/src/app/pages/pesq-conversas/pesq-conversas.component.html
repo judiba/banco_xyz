@@ -1,0 +1,447 @@
+﻿
+<div class="page">
+  <div class="container">
+    
+    <div class="title">
+      <img
+        class="title__icon"
+        src="/assets/pesq.svg"
+        alt=""
+        aria-hidden="true"
+        width="16"
+        height="16"
+      />
+      <h1 class="title__text">Pesquisa</h1>
+    </div>
+
+    
+    <div class="search">
+      <div class="search__box" role="search" aria-label="Buscar conversas">
+        <img
+          class="search__icon"
+          src="/assets/pesq.svg"
+          alt=""
+          aria-hidden="true"
+          width="16"
+          height="16"
+        />
+
+        
+        <input
+          class="search__input"
+          type="text"
+          placeholder="Buscar conversas..."
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+          aria-label="Buscar conversas"
+        />
+      </div>
+
+      
+      <div
+        class="search__results"
+        *ngIf="searchQuery().trim() && searchResultsCount() > 0"
+      >
+        {{ searchResultsCount() }} resultados para "{{ searchQuery().trim() }}"
+      </div>
+    </div>
+
+    
+    <div class="list" role="list">
+      
+      <div
+        class="item-row"
+        role="listitem"
+        *ngFor="let c of filteredConversations()"
+        [class.item-row--menu-open]="openMenuConversationId() === c.id"
+      >
+        <button
+          class="item"
+          type="button"
+          (click)="openConversation(c)"
+        >
+          <div class="item__left">
+            <div class="item__title">{{ c.title }}</div>
+            <div class="item__desc">
+              {{ c.description || '—' }}
+            </div>
+          </div>
+
+          <div class="item__date">{{ formatDateLabel(c.lastUpdatedAt) }}</div>
+        </button>
+
+        <button
+          class="item__menu"
+          type="button"
+          aria-label="Opções da conversa"
+          (click)="toggleConversationMenu($event, c.id)"
+          [class.item__menu--open]="openMenuConversationId() === c.id"
+        >
+          <img
+            class="item__menu-icon"
+            src="/assets/3p.svg"
+            alt=""
+            aria-hidden="true"
+            width="18"
+            height="18"
+          />
+        </button>
+
+        
+        <ng-container *ngIf="openMenuConversationId() === c.id">
+          <div
+            class="search-menu-overlay"
+            (click)="closeConversationMenu()"
+            (contextmenu)="$event.preventDefault()"
+          >
+            <div
+              class="search-menu-popover"
+              [style.left.px]="menuPosition().left"
+              [style.top.px]="menuPosition().top"
+              (click)="$event.stopPropagation()"
+              role="menu"
+              aria-label="Menu da conversa"
+            >
+              <button
+                class="popover__item"
+                type="button"
+                (click)="openRenameConversationModal(c)"
+              >
+                <span class="popover__icon">
+                  <img src="/assets/mais.svg" alt="" aria-hidden="true" />
+                </span>
+                <span class="popover__label">Renomear conversa</span>
+              </button>
+
+              <button
+                type="button"
+                class="popover__item popover__item--with-chevron"
+                role="menuitem"
+                (click)="$event.stopPropagation()"
+                (mouseenter)="openMoveToFolderMenu($event)"
+                (mouseleave)="scheduleCloseMoveToFolderMenu()"
+              >
+                <span class="popover__icon" aria-hidden="true">
+                  <img src="/assets/pasta.svg" alt="" aria-hidden="true" />
+                </span>
+                <span class="popover__label">Mover para pasta</span>
+                <span class="popover__chevron" aria-hidden="true">
+                  <img src="/assets/set.svg" alt="" aria-hidden="true" />
+                </span>
+              </button>
+
+              <div
+                class="search-move-submenu"
+                *ngIf="openedMoveToFolderMenuPos() as movePos"
+                [style.top.px]="movePos.top"
+                [style.left.px]="movePos.left"
+                role="menu"
+                aria-label="Mover para pasta"
+                (mouseenter)="cancelCloseMoveToFolderMenu()"
+                (mouseleave)="scheduleCloseMoveToFolderMenu()"
+                (click)="$event.stopPropagation()"
+              >
+                <button
+                  type="button"
+                  class="move-menu__item move-menu__item--create"
+                  role="menuitem"
+                  (click)="createFolderFromMoveMenu(c)"
+                >
+                  <span class="move-menu__icon" aria-hidden="true">
+                    <img src="/assets/past-mais.svg" alt aria-hidden="true" />
+                  </span>
+                  <span class="move-menu__label">Criar nova pasta</span>
+                </button>
+
+                <div class="move-menu__divider" role="separator"></div>
+
+                <button
+                  *ngFor="let f of folders()"
+                  type="button"
+                  class="move-menu__item"
+                  role="menuitem"
+                  (click)="moveConversationToFolderId(c.id, f.id)"
+                >
+                  <span class="move-menu__icon" aria-hidden="true">
+                    <img src="/assets/pasta.svg" alt aria-hidden="true" />
+                  </span>
+                  <span class="move-menu__label">{{ f.name }}</span>
+                </button>
+
+                <div class="move-menu__empty" *ngIf="folders().length === 0">
+                  Nenhuma pasta criada.
+                </div>
+              </div>
+
+              <button class="popover__item" type="button" (click)="openExportModal($event, c)">
+                <span class="popover__icon">
+                  <img src="/assets/down2.svg" alt="" aria-hidden="true" />
+                </span>
+                <span class="popover__label">Exportar</span>
+              </button>
+
+              <div class="popover__divider" role="separator"></div>
+
+              <button
+                class="popover__item popover__item--danger"
+                type="button"
+                (click)="deleteConversation($event, c)"
+              >
+                <span class="popover__icon">
+                  <img src="/assets/del.svg" alt="" aria-hidden="true" />
+                </span>
+                <span class="popover__label">Excluir conversa</span>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+</div>
+
+
+<div
+  class="modal-overlay"
+  *ngIf="isRenameConversationModalOpen()"
+  (click)="closeRenameConversationModal()"
+  role="presentation"
+>
+  <div
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Renomear conversa"
+    (click)="$event.stopPropagation()"
+  >
+    <header class="modal__header">
+      <h2 class="modal__title">Renomear conversa</h2>
+
+      <button
+        class="modal__close"
+        type="button"
+        aria-label="Fechar"
+        (click)="closeRenameConversationModal()"
+      >
+        ×
+      </button>
+    </header>
+
+    <form class="modal__body" (ngSubmit)="submitRenameConversation()">
+      <label class="modal__label" for="rename-conversation-title">
+        Nome da conversa
+      </label>
+
+      <input
+        #renameConversationInput
+        id="rename-conversation-title"
+        class="modal__input"
+        type="text"
+        placeholder="Informe o nome da conversa"
+        [ngModel]="renameConversationTitle()"
+        (ngModelChange)="renameConversationTitle.set($event); renameConversationError.set(null)"
+        name="renameConversationTitle"
+        autocomplete="off"
+        autofocus />
+
+      <div class="modal__error" *ngIf="renameConversationError()">
+        {{ renameConversationError() }}
+      </div>
+
+      <footer class="modal__footer">
+        <button
+          class="modal__submit"
+          type="submit"
+          [disabled]="!renameConversationTitle().trim()"
+        >
+          Renomear
+        </button>
+      </footer>
+    </form>
+  </div>
+</div>
+
+
+<div
+  class="modal-overlay"
+  *ngIf="isCreateFolderModalOpen()"
+  (click)="closeCreateFolderModal()"
+  role="presentation"
+>
+  <div
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Criar pasta"
+    (click)="$event.stopPropagation()"
+  >
+    <header class="modal__header">
+      <h2 class="modal__title">Criar pasta</h2>
+
+      <button
+        class="modal__close"
+        type="button"
+        aria-label="Fechar"
+        (click)="closeCreateFolderModal()"
+      >
+        ×
+      </button>
+    </header>
+
+    <form class="modal__body" (ngSubmit)="submitCreateFolder()">
+      <label class="modal__label" for="new-folder-name-home">Nome da
+        pasta</label>
+
+      <input
+        #createFolderInput
+        id="new-folder-name-home"
+        class="modal__input"
+        type="text"
+        placeholder="Informe o nome da pasta"
+        [ngModel]="newFolderName()"
+        (ngModelChange)="newFolderName.set($event); createFolderError.set(null)"
+        name="newFolderName"
+        autocomplete="off" />
+
+      <div class="modal__error" *ngIf="createFolderError()">
+        {{ createFolderError() }}
+      </div>
+
+      <div class="modal__info" *ngIf="showCreateFolderInfo()">
+        <img
+          class="modal__info-icon"
+          src="/assets/infoa.svg"
+          alt
+          aria-hidden="true"
+          width="18"
+          height="18"
+        />
+        <p class="modal__info-text">
+          Os arquivos mantêm chats em um só lugar. Use-os para trabalhos em
+          andamento
+          ou apenas para manter as coisas organizadas.
+        </p>
+      </div>
+
+      <footer class="modal__footer">
+        <button
+          class="modal__submit"
+          type="submit"
+          [disabled]="!newFolderName().trim()"
+        >
+          Criar pasta
+        </button>
+      </footer>
+    </form>
+  </div>
+</div>
+
+
+<div
+  class="empty"
+  *ngIf="searchQuery().trim() && filteredConversations().length === 0"
+>
+  Nenhum resultado encontrado
+</div>
+
+
+<div
+  class="export-modal__backdrop"
+  *ngIf="isExportModalOpen()"
+  (click)="closeExportModal()"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Exportar conversa"
+>
+  <div class="export-modal" (click)="$event.stopPropagation()">
+    <header class="export-modal__header">
+      <div class="export-modal__title">Exportar conversa</div>
+      <button
+        class="export-modal__close"
+        type="button"
+        (click)="closeExportModal()"
+        aria-label="Fechar"
+      >
+        <img
+          src="/assets/close.svg"
+          alt=""
+          aria-hidden="true"
+          width="16"
+          height="16" />
+      </button>
+    </header>
+
+    <div class="export-modal__divider"></div>
+
+    <section class="export-modal__body">
+      <div class="export-modal__subtitle">Escolha o formato</div>
+
+      <div
+        class="export-modal__options"
+        role="radiogroup"
+        aria-label="Formato de exportação"
+      >
+        <button
+          type="button"
+          class="export-modal__option"
+          (click)="selectExportFormat('pdf')"
+          [class.export-modal__option--selected]="exportFormat() === 'pdf'"
+          [attr.aria-pressed]="exportFormat() === 'pdf'"
+        >
+          <div class="export-modal__option-icon" aria-hidden="true">
+            <img
+              src="/assets/arq.svg"
+              alt=""
+              aria-hidden="true"
+              width="22"
+              height="22"
+            />
+          </div>
+
+          <div class="export-modal__option-title">PDF</div>
+          <div class="export-modal__option-subtitle">Exportar em PDF</div>
+        </button>
+
+        <button
+          type="button"
+          class="export-modal__option"
+          (click)="selectExportFormat('txt')"
+          [class.export-modal__option--selected]="exportFormat() === 'txt'"
+          [attr.aria-pressed]="exportFormat() === 'txt'"
+        >
+          <div class="export-modal__option-icon" aria-hidden="true">
+            <img
+              src="/assets/arq.svg"
+              alt=""
+              aria-hidden="true"
+              width="22"
+              height="22"
+            />
+          </div>
+
+          <div class="export-modal__option-title">TXT</div>
+          <div class="export-modal__option-subtitle">Exportar em TXT</div>
+        </button>
+      </div>
+    </section>
+
+    <footer class="export-modal__footer">
+      <button
+        type="button"
+        class="export-modal__cancel"
+        (click)="closeExportModal()"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="export-modal__export"
+        (click)="confirmExport()"
+        [disabled]="!exportFormat()"
+      >
+        Exportar
+      </button>
+    </footer>
+  </div>
+</div>
+    </div>
+  </div>
+</div>

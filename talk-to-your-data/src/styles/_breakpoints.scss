@@ -1,0 +1,18 @@
+// Breakpoints compartilhados (mobile-first helpers)
+$bp-xs: 480px;
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 992px;
+$bp-xl: 1200px;
+
+@mixin down($max) {
+  @media (max-width: $max) {
+    @content;
+  }
+}
+
+@mixin up($min) {
+  @media (min-width: $min) {
+    @content;
+  }
+}

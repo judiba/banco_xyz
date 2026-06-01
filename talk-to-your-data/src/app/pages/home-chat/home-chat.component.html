@@ -1,0 +1,355 @@
+
+
+<header class="topbar" aria-label="Topo">
+  <div class="topbar__inner">
+    
+    <h1 class="topbar__title">{{ currentConversation()?.title || 'Novo chat' }}</h1>
+
+    <div class="topbar__actions">
+      
+      <button
+        class="btn btn--ghost btn--with-icon"
+        type="button"
+        (click)="openExportModal()"
+      >
+        <img
+          class="btn__icon"
+          src="/assets/icon-down.svg"
+          alt=""
+          aria-hidden="true"
+          width="16"
+          height="16"
+        />
+        Exportar
+      </button>
+      
+      <button class="btn--3p" type="button" aria-label="Mais opções">
+        <img
+          class="btn__3p"
+          src="/assets/3p.svg"
+          alt=""
+          aria-hidden="true"
+          width="16"
+          height="16"
+        />
+      </button>
+    </div>
+  </div>
+</header>
+
+
+<section class="stage" aria-label="Área do chat">
+  <div class="chat" *ngIf="currentMessages().length > 0; else welcome">
+    <div class="chat__scroll" aria-label="Mensagens">
+      <div class="chat__thread">
+        <article
+          class="msg"
+          *ngFor="let m of currentMessages(); trackBy: trackByMessageId"
+          [class.msg--user]="m.role === 'user'"
+          [class.msg--assistant]="m.role === 'assistant'"
+          [class.msg--pending]="m.status === 'pending'"
+          [attr.aria-label]="m.role === 'user' ? 'Sua mensagem' : 'Resposta do assistente'"
+        >
+          <div class="msg__avatar" *ngIf="m.role === 'assistant'" aria-hidden="true">
+            <img
+              class="msg__avatar-img"
+              src="/assets/logo-azul-sn.png"
+              alt="" />
+          </div>
+
+          <div
+            class="msg__avatar msg__avatar--user"
+            *ngIf="m.role === 'user'"
+            aria-hidden="true"
+          >
+            <span class="msg__avatar-initial">{{ userInitial() }}</span>
+          </div>
+
+          <div class="msg__body">
+            <header class="msg__header">
+              <span class="msg__author">
+                {{ m.role === 'user' ? 'Você' : assistantName() }}
+              </span>
+              <time
+                class="msg__time"
+                [attr.datetime]="messageTimeIso(m.createdAt)"
+              >
+                {{ formatMessageTime(m.createdAt) }}
+              </time>
+            </header>
+
+            <div
+              class="msg__bubble"
+              [class.msg__bubble--user]="m.role === 'user'"
+              [class.msg__bubble--assistant]="m.role === 'assistant'"
+            >
+              <ng-container *ngIf="m.role === 'assistant'; else userBubble">
+                <div
+                  class="msg__content msg__content--assistant"
+                  [innerHTML]="formatAssistantMessage(m.content)"
+                ></div>
+                <span
+                  class="msg__typing-dots"
+                  *ngIf="m.status === 'pending' && !m.content"
+                  aria-hidden="true"
+                >
+                  <span></span><span></span><span></span>
+                </span>
+              </ng-container>
+
+              <ng-template #userBubble>
+                <div class="msg__content msg__content--user">{{ m.content }}</div>
+              </ng-template>
+            </div>
+
+            <footer
+              class="msg__actions"
+              *ngIf="m.role === 'assistant' && m.status !== 'pending'"
+              aria-label="Ações da mensagem"
+            >
+              <button
+                class="msg__action-btn"
+                type="button"
+                (click)="onCopyClicked(m.id, m.content)"
+                [attr.data-message-id]="m.id"
+                data-action="copy"
+                aria-label="Copiar"
+                title="Copiar"
+              >
+                <img src="/assets/copiar.svg" alt="" aria-hidden="true" width="16" height="16" />
+              </button>
+
+              <button
+                class="msg__action-btn"
+                type="button"
+                (click)="toggleAssistantFeedback(m.id, 'like')"
+                [class.is-selected]="isFeedbackSelected(m.id, 'like')"
+                [attr.aria-pressed]="isFeedbackSelected(m.id, 'like')"
+                [attr.data-message-id]="m.id"
+                data-action="like"
+                aria-label="Curtir"
+                title="Curtir"
+              >
+                <img src="/assets/like.svg" alt="" aria-hidden="true" width="14" height="14" />
+              </button>
+
+              <button
+                class="msg__action-btn"
+                type="button"
+                (click)="toggleAssistantFeedback(m.id, 'deslike')"
+                [class.is-selected]="isFeedbackSelected(m.id, 'deslike')"
+                [attr.aria-pressed]="isFeedbackSelected(m.id, 'deslike')"
+                [attr.data-message-id]="m.id"
+                data-action="deslike"
+                aria-label="Não curtir"
+                title="Não curtir"
+              >
+                <img src="/assets/deslike.svg" alt="" aria-hidden="true" width="14" height="14" />
+              </button>
+
+              <button
+                class="msg__action-btn"
+                type="button"
+                (click)="regenerateAssistantMessage(m.conversationId, m.id)"
+                [attr.data-message-id]="m.id"
+                data-action="refresh"
+                aria-label="Regenerar resposta"
+                title="Regenerar resposta"
+              >
+                <img src="/assets/refresh.svg" alt="" aria-hidden="true" width="14" height="14" />
+              </button>
+            </footer>
+          </div>
+        </article>
+
+        <div
+          class="msg msg--assistant msg--typing-indicator"
+          *ngIf="isSending() && !hasPendingAssistantBubble()"
+          aria-live="polite"
+        >
+          <div class="msg__avatar" aria-hidden="true">
+            <img class="msg__avatar-img" src="/assets/logo-azul-sn.png" alt="" />
+          </div>
+          <div class="msg__body">
+            <header class="msg__header">
+              <span class="msg__author">{{ assistantName() }}</span>
+            </header>
+            <div class="msg__bubble msg__bubble--assistant msg__bubble--typing">
+              <span class="msg__typing-dots" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div #messagesEnd class="chat__anchor" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #welcome>
+    <div class="welcome">
+      <div class="welcome__icon" aria-hidden="true">
+        <img class="welcome__logo" src="/assets/logo-azul-sn.png" alt="" />
+      </div>
+      <h2 class="welcome__title">Olá! Como posso ajudar?</h2>
+      <p class="welcome__text">
+        Pergunte sobre audiência, share, comparativos e análises estratégicas da
+        Rede Record.
+      </p>
+    </div>
+  </ng-template>
+</section>
+
+<div class="chat-alert" *ngIf="chatError()" role="alert">{{ chatError() }}</div>
+
+<footer class="composer" aria-label="Campo de mensagem">
+  <div class="composer__inner">
+    
+    <textarea
+      class="composer__input"
+      placeholder="Pergunte sobre dados da Record..."
+      [ngModel]="message()"
+      (ngModelChange)="message.set($event)"
+      (keydown.enter)="onEnter($event)"
+      rows="1"
+    ></textarea>
+
+    
+    <button class="composer__attach" type="button" aria-label="Anexar">
+      <img
+        class="composer__attach-icon"
+        src="/assets/grampo.svg"
+        alt=""
+        aria-hidden="true"
+        width="18"
+        height="19"
+      />
+    </button>
+
+    
+    <button
+      class="composer__send"
+      type="button"
+      (click)="send()"
+      [disabled]="!message().trim() || isSending()"
+      aria-label="Enviar"
+    >
+      <img
+        class="composer__send-icon"
+        src="/assets/seta.svg"
+        alt=""
+        aria-hidden="true"
+      />
+    </button>
+  </div>
+
+  
+  <div class="composer__disclaimer">
+    O RecordAI pode cometer erros. Confira informações importantes antes de
+    tomar decisões.
+  </div>
+</footer>
+
+
+<div
+  class="export-modal__backdrop"
+  *ngIf="isExportModalOpen()"
+  (click)="closeExportModal()"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Exportar conversa"
+>
+  <div class="export-modal" (click)="$event.stopPropagation()">
+    <header class="export-modal__header">
+      <div class="export-modal__title">Exportar conversa</div>
+
+      <button
+        class="export-modal__close"
+        type="button"
+        (click)="closeExportModal()"
+        aria-label="Fechar"
+      >
+        <img
+          src="/assets/close.svg"
+          alt=""
+          aria-hidden="true"
+          width="16"
+          height="16" />
+      </button>
+    </header>
+
+    <div class="export-modal__divider"></div>
+
+    <section class="export-modal__body">
+      <div class="export-modal__subtitle">Escolha o formato</div>
+
+      <div
+        class="export-modal__options"
+        role="radiogroup"
+        aria-label="Formato de exportação"
+      >
+        <button
+          type="button"
+          class="export-modal__option"
+          (click)="selectExportFormat('pdf')"
+          [class.export-modal__option--selected]="exportFormat() === 'pdf'"
+          [attr.aria-pressed]="exportFormat() === 'pdf'"
+        >
+          <div class="export-modal__option-icon" aria-hidden="true">
+            <img
+              src="/assets/arq.svg"
+              alt=""
+              aria-hidden="true"
+              width="22"
+              height="22"
+            />
+          </div>
+
+          <div class="export-modal__option-title">PDF</div>
+          <div class="export-modal__option-subtitle">Exportar em PDF</div>
+        </button>
+
+        <button
+          type="button"
+          class="export-modal__option"
+          (click)="selectExportFormat('txt')"
+          [class.export-modal__option--selected]="exportFormat() === 'txt'"
+          [attr.aria-pressed]="exportFormat() === 'txt'"
+        >
+          <div class="export-modal__option-icon" aria-hidden="true">
+            <img
+              src="/assets/arq.svg"
+              alt=""
+              aria-hidden="true"
+              width="22"
+              height="22"
+            />
+          </div>
+
+          <div class="export-modal__option-title">TXT</div>
+          <div class="export-modal__option-subtitle">Exportar em TXT</div>
+        </button>
+      </div>
+    </section>
+
+    <footer class="export-modal__footer">
+      <button
+        type="button"
+        class="export-modal__cancel"
+        (click)="closeExportModal()"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="export-modal__export"
+        (click)="confirmExport()"
+        [disabled]="!exportFormat()"
+      >
+        Exportar
+      </button>
+    </footer>
+  </div>
+</div>
