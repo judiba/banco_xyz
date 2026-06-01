@@ -10,6 +10,7 @@ class Agent:
     async def retrieve(self, ctx: AgentContext):
         try:
             from backend.rag.rag_search import rag_search
+
             return await rag_search(ctx)
         except Exception:
             return []

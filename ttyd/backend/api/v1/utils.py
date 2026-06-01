@@ -56,7 +56,9 @@ def to_folder_out(item: dict[str, Any], conversations_count: int | None = None) 
     return out
 
 
-def to_message_out(item: dict[str, Any], *, viewer_roles: list[str] | None = None) -> dict[str, Any]:
+def to_message_out(
+    item: dict[str, Any], *, viewer_roles: list[str] | None = None
+) -> dict[str, Any]:
     from backend.services.response_presentation import present_assistant_response
 
     content = item["content"]

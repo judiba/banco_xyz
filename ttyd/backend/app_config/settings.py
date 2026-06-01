@@ -50,14 +50,21 @@ class Settings:
     CHAT_RATE_LIMIT_PER_MINUTE: int = int(os.getenv("CHAT_RATE_LIMIT_PER_MINUTE", "30"))
     GUARDRAILS_ENABLED: bool = os.getenv("GUARDRAILS_ENABLED", "true").lower() == "true"
     # Em dev/local, API retorna causa do erro LLM (nunca habilitar em prod)
-    APP_EXPOSE_LLM_ERRORS: bool = os.getenv(
-        "APP_EXPOSE_LLM_ERRORS",
-        "true" if ENV_NAME in ("dev", "local") else "false",
-    ).lower() == "true"
+    APP_EXPOSE_LLM_ERRORS: bool = (
+        os.getenv(
+            "APP_EXPOSE_LLM_ERRORS",
+            "true" if ENV_NAME in ("dev", "local") else "false",
+        ).lower()
+        == "true"
+    )
 
     # Microsoft Entra (OAuth/MSAL legado) — variáveis preservadas, fluxo paralelo ao SAML
-    ENTRA_TENANT_ID: str = os.getenv("ENTRA_TENANT_ID") or os.getenv("APP_AUTH_MICROSOFT_TENANT_ID", "")
-    ENTRA_CLIENT_ID: str = os.getenv("ENTRA_CLIENT_ID") or os.getenv("APP_AUTH_MICROSOFT_CLIENT_ID", "")
+    ENTRA_TENANT_ID: str = os.getenv("ENTRA_TENANT_ID") or os.getenv(
+        "APP_AUTH_MICROSOFT_TENANT_ID", ""
+    )
+    ENTRA_CLIENT_ID: str = os.getenv("ENTRA_CLIENT_ID") or os.getenv(
+        "APP_AUTH_MICROSOFT_CLIENT_ID", ""
+    )
     ENTRA_CLIENT_SECRET: str = os.getenv("ENTRA_CLIENT_SECRET") or os.getenv(
         "APP_AUTH_MICROSOFT_CLIENT_SECRET", ""
     )

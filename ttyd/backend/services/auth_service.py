@@ -7,7 +7,6 @@ from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 
 from backend.api.v1.errors import ApiException
-from backend.api.v1.schemas.common import ErrorDetail
 from backend.app_config.settings import settings
 from backend.infrastructure.persistence.factory import get_store
 from backend.infrastructure.persistence.models import UserRecord
@@ -36,7 +35,9 @@ def create_refresh_token(user_id: str) -> tuple[str, str]:
     raw = secrets.token_urlsafe(48)
     token_id = _hash_refresh_token(raw)
     expires_at = int(
-        (datetime.now(timezone.utc) + timedelta(seconds=settings.JWT_REFRESH_EXPIRE_SECONDS)).timestamp()
+        (
+            datetime.now(timezone.utc) + timedelta(seconds=settings.JWT_REFRESH_EXPIRE_SECONDS)
+        ).timestamp()
         * 1000
     )
     get_store().save_refresh_token(token_id, user_id, expires_at)

@@ -22,6 +22,7 @@ def run_ingestion(org_id: str, dataset: str):
 
     print("[INGESTION] completed")
 
+
 # TO DO: Refatorar para usar o pipeline de ingestão genérico, que pode ser adaptado para diferentes fontes de dados (ex: S3, APIs, bancos de dados). O código atual é um exemplo específico para ingestão de arquivos CSV para o S3, mas a ideia é criar uma estrutura mais flexível e reutilizável.
 
 # Configurações do S3

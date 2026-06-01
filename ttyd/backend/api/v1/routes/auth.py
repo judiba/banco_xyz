@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Request, Response
+from fastapi import APIRouter, Response
 
 from backend.api.v1.schemas.auth import (
     LoginRequest,

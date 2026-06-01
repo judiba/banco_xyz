@@ -28,15 +28,12 @@ def _load_yaml(path_value: str | Path) -> dict[str, Any]:
     with yaml_path.open("r", encoding="utf-8") as file:
         data = yaml.safe_load(file)
 
-    assert data is not None, (
-        f"O arquivo {yaml_path} está vazio ou contém YAML inválido."
-    )
+    assert data is not None, f"O arquivo {yaml_path} está vazio ou contém YAML inválido."
 
-    assert isinstance(data, dict), (
-        f"O conteúdo raiz de {yaml_path} deve ser um objeto YAML."
-    )
+    assert isinstance(data, dict), f"O conteúdo raiz de {yaml_path} deve ser um objeto YAML."
 
     return data
+
 
 def _iter_tabelas(data: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     """
@@ -76,19 +73,19 @@ def _validate_table_metadata(tabela_nome: str, tabela_conteudo: dict[str, Any]) 
     assert isinstance(colunas, list), f"As colunas da tabela '{tabela_nome}' devem ser uma lista."
 
     for index, coluna in enumerate(colunas):
-        assert isinstance(coluna, dict), (
-            f"A coluna {index} da tabela '{tabela_nome}' deve ser um objeto."
-        )
+        assert isinstance(
+            coluna, dict
+        ), f"A coluna {index} da tabela '{tabela_nome}' deve ser um objeto."
 
         coluna_nome = coluna.get("nome") or coluna.get("name")
-        assert coluna_nome, (
-            f"A coluna {index} da tabela '{tabela_nome}' deve possuir 'nome' ou 'name'."
-        )
+        assert (
+            coluna_nome
+        ), f"A coluna {index} da tabela '{tabela_nome}' deve possuir 'nome' ou 'name'."
 
         coluna_descricao = coluna.get("descricao") or coluna.get("description")
-        assert coluna_descricao, (
-            f"A coluna '{coluna_nome}' da tabela '{tabela_nome}' está sem descrição."
-        )
+        assert (
+            coluna_descricao
+        ), f"A coluna '{coluna_nome}' da tabela '{tabela_nome}' está sem descrição."
 
 
 def test_validar_yaml_colunas_local_level19():

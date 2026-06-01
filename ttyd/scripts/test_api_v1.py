@@ -19,7 +19,7 @@ def print_title(title: str) -> None:
 
 def main() -> None:
     print("🚀 Iniciando Teste de Integração da API v1...")
-    
+
     # 1. Health check (GET /health)
     print_title("Health Check")
     health_url = BASE_URL.replace("/v1", "/health")

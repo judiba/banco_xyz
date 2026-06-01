@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import copy
 from typing import Any
 
 from passlib.context import CryptContext
@@ -316,7 +315,9 @@ class MemoryStore:
 
     def count_conversations_in_folder(self, user_id: str, folder_id: str) -> int:
         return sum(
-            1 for c in self.conversations.values() if c.user_id == user_id and c.folder_id == folder_id
+            1
+            for c in self.conversations.values()
+            if c.user_id == user_id and c.folder_id == folder_id
         )
 
     def save_refresh_token(self, token_id: str, user_id: str, expires_at: int) -> None:

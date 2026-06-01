@@ -4,10 +4,8 @@ from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse, Response
 
 from backend.api.v1.errors import ApiException
-from backend.app_config.settings import settings
 from backend.services import auth_service
 from backend.services.saml_service import (
-    SamlNotEnabledError,
     SamlValidationError,
     build_frontend_redirect_url,
     build_mock_saml_user,

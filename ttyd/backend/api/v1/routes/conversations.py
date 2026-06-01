@@ -13,7 +13,7 @@ from backend.api.v1.schemas.conversation import (
     WithMessageResponse,
 )
 from backend.api.v1.schemas.message import ChatMessage
-from backend.api.v1.utils import to_conversation_summary, to_message_out
+from backend.api.v1.utils import to_conversation_summary
 from backend.infrastructure.persistence.factory import get_store
 from backend.services import chat_service
 
@@ -51,8 +51,7 @@ def list_conversations(
     end = start + params["page_size"]
     return PaginatedResponse(
         data=[
-            ConversationSummary(**to_conversation_summary(c.to_dict()))
-            for c in convs[start:end]
+            ConversationSummary(**to_conversation_summary(c.to_dict())) for c in convs[start:end]
         ],
         pagination=build_pagination(params["page"], params["page_size"], total),
     )
@@ -136,9 +135,7 @@ def patch_conversation(
                 422,
                 "VALIDATION_ERROR",
                 "Dados inválidos.",
-                details=[
-                    ErrorDetail(field="title", message="Informe o nome da conversa.")
-                ],
+                details=[ErrorDetail(field="title", message="Informe o nome da conversa.")],
             )
         conv.title = title
 

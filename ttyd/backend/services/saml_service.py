@@ -37,9 +37,7 @@ def is_saml_enabled() -> bool:
 def is_saml_dev_mock_enabled() -> bool:
     """Login SAML sem IdP Record — só com DEV_OFFLINE (evita uso em prod)."""
     return (
-        settings.APP_AUTH_SAML_ENABLED
-        and settings.APP_AUTH_SAML_DEV_MOCK
-        and settings.DEV_OFFLINE
+        settings.APP_AUTH_SAML_ENABLED and settings.APP_AUTH_SAML_DEV_MOCK and settings.DEV_OFFLINE
     )
 
 
@@ -156,9 +154,7 @@ def process_saml_response(request_data: dict[str, str]) -> SamlUserData:
     attributes = auth.get_attributes() or {}
     name_id = auth.get_nameid() or ""
     email = (
-        _first_attr(attributes, "email")
-        or _first_attr(attributes, "userPrincipalName")
-        or name_id
+        _first_attr(attributes, "email") or _first_attr(attributes, "userPrincipalName") or name_id
     )
     given = _first_attr(attributes, "givenName")
     surname = _first_attr(attributes, "surname")
@@ -176,7 +172,6 @@ def process_saml_response(request_data: dict[str, str]) -> SamlUserData:
 
 def get_sp_metadata_xml() -> str:
     _require_enabled()
-    from onelogin.saml2.auth import OneLogin_Saml2_Auth
     from onelogin.saml2.settings import OneLogin_Saml2_Settings
 
     saml_settings = OneLogin_Saml2_Settings(settings=build_saml_settings(), sp_validation_only=True)

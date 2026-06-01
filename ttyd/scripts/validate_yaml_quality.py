@@ -2,9 +2,7 @@
 try:
     import yaml
 except ImportError:
-    raise SystemExit(
-        "PyYAML não instalado. Execute: poetry add pyyaml"
-    )
+    raise SystemExit("PyYAML não instalado. Execute: poetry add pyyaml")
 from pathlib import Path
 import sys
 

@@ -22,9 +22,11 @@ KEYWORDS_OFFLINE = {
     "users": ["churn", "usuário", "retenção"],
 }
 
+
 def text_to_sql_tool(question: str) -> str:
     agent = get_text_to_sql_agent()
     return str(agent(question))
+
 
 def build_rag_agent(memory_history: Any = None) -> Agent:
     logger.info("Construindo instância dinâmica do RAG Agent...")

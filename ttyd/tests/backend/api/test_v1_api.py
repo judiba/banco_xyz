@@ -93,9 +93,10 @@ def test_send_message_dev_offline(client):
     body = msg.json()
     assert body["userMessage"]["role"] == "user"
     assert body["assistantMessage"]["role"] == "assistant"
-    assert "Entendi" in body["assistantMessage"]["content"] or len(
-        body["assistantMessage"]["content"]
-    ) > 0
+    assert (
+        "Entendi" in body["assistantMessage"]["content"]
+        or len(body["assistantMessage"]["content"]) > 0
+    )
 
 
 def test_with_message_creates_conversation(client):
@@ -144,7 +145,9 @@ def test_message_feedback(client):
 def test_export_txt(client):
     token = _login(client)
     headers = _auth(token)
-    conv_id = client.get("/v1/session/bootstrap", headers=headers).json()["conversations"]["data"][0]["id"]
+    conv_id = client.get("/v1/session/bootstrap", headers=headers).json()["conversations"]["data"][
+        0
+    ]["id"]
     resp = client.get(
         f"/v1/conversations/{conv_id}/export?format=txt",
         headers=headers,

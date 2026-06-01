@@ -4,7 +4,6 @@ from typing import Any, Dict
 
 from backend.core.context import RequestContext
 from backend.application.context_builder import build_context
-from backend.application.memory_service import get_memory
 from backend.application.rag_service import run_rag
 from backend.app_config.settings import settings
 

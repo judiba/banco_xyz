@@ -1,5 +1,3 @@
-from typing import Any
-
 from backend.agents.runtime.context import AgentContext
 from backend.agents.agent import Agent
 

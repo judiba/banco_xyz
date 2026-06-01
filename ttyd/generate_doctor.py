@@ -102,8 +102,7 @@ def main():
         "scripts/generate_doctor.py",
         "poetry.lock",
         "README.md",
-        "backend/main.py"
-
+        "backend/main.py",
     ]
     for f in files:
         path = ROOT / f

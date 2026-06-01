@@ -36,14 +36,13 @@ app.add_middleware(
 )
 
 app.add_exception_handler(ApiException, api_exception_handler)  # type: ignore[arg-type]
-app.add_exception_handler(StarletteHTTPException, http_exception_handler) # type: ignore[arg-type]
-app.add_exception_handler(RequestValidationError, validation_exception_handler) # type: ignore[arg-type]
+app.add_exception_handler(StarletteHTTPException, http_exception_handler)  # type: ignore[arg-type]
+app.add_exception_handler(RequestValidationError, validation_exception_handler)  # type: ignore[arg-type]
 
 
 app.include_router(api_v1_router)
 # Compatibilidade ContentAI / Record: /api/auth/saml/* (mesmos handlers de /v1/auth/saml/*)
 app.include_router(saml_routes.router, prefix="/api")
-
 
 
 class InvokeRequest(BaseModel):
@@ -75,11 +74,7 @@ async def run(payload: InvokeRequest):
     from backend.app_config.settings import settings
 
     if settings.DEV_OFFLINE:
-        return {
-            "answer": (
-                f"[DEV OFFLINE] Resposta simulada para: {payload.question}"
-            )
-        }
+        return {"answer": (f"[DEV OFFLINE] Resposta simulada para: {payload.question}")}
 
     from backend.application.orchestrator_memory import invoke
 

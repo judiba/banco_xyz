@@ -73,12 +73,12 @@ async def _generate_assistant_content(prompt: str, org_id: str) -> str:
         orchestrator = module.get_orchestrator()
         response = await orchestrator.run(question=prompt)
 
-        
-        text = str(response.get("text") or response) if isinstance(response, dict) else str(response)
+        text = (
+            str(response.get("text") or response) if isinstance(response, dict) else str(response)
+        )
         if text.startswith("Erro:") or "Agente RAG não disponível" in text:
             raise RuntimeError(text)
         return text
-
 
     except ApiException:
         raise
