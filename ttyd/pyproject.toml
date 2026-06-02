@@ -5,7 +5,7 @@ description = "TTYD - Talk To Your Data"
 authors = ["Squad Estratégia Digital e CRM"]
 readme = "README.md"
 packages = [
-  { include = "app", from = "backend" },
+  { include = "backend" },
 ]
 
 [tool.poetry.dependencies]
