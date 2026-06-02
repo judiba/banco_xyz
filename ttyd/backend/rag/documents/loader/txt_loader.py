@@ -1,5 +1,5 @@
 # infra/rag_docs/loader/txt_loader.py
-from backend.infrastructure.rag_docs.loader.base import BaseDocumentLoader
+from backend.rag.documents.loader.base import BaseDocumentLoader
 
 
 class TxtLoader(BaseDocumentLoader):

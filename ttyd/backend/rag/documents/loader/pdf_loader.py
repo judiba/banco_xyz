@@ -1,6 +1,6 @@
-# infra/rag_docs/loader/pdf_loader.py
+# backend.rag.documents.loader.pdf_loader
 
-from backend.infrastructure.rag_docs.loader.base import BaseDocumentLoader
+from backend.rag.documents.loader.base import BaseDocumentLoader
 from io import BytesIO
 from pypdf import PdfReader
 

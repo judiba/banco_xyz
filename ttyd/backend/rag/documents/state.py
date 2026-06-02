@@ -1,5 +1,5 @@
 from typing import Optional
-from backend.infrastructure.rag_docs.store import FaissRAGDocsIndex
+from backend.rag.documents.store import FaissRAGDocsIndex
 
 _rag_docs_index: Optional[FaissRAGDocsIndex] = None
 

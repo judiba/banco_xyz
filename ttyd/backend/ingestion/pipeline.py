@@ -20,6 +20,9 @@ def run_ingestion(org_id: str, dataset: str):
 
     store_vectors(ctx, ctx, vectors)
 
+    from backend.ingestion.registry import mark_ready
+    mark_ready(dataset)
+
     print("[INGESTION] completed")
 
 

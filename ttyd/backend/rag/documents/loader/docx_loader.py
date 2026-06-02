@@ -1,4 +1,4 @@
-from backend.infrastructure.rag_docs.loader.base import BaseDocumentLoader
+from backend.rag.documents.loader.base import BaseDocumentLoader
 from io import BytesIO
 from docx import Document
 

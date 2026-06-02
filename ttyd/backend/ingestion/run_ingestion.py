@@ -3,12 +3,12 @@
 import sys
 
 
-from .pipeline import run_ingestion
-from .registry import mark_ready
+from backend.ingestion.pipeline import run_ingestion
+from backend.ingestion.registry import mark_ready
 
 
 def ingest(dataset: str):
-    run_ingestion(dataset)
+    run_ingestion("dev-org", dataset)
 
     mark_ready(dataset)
 

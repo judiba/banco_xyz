@@ -1,6 +1,6 @@
 import json
 from typing import List, Dict, Any
-from backend.app_config.bedrock import get_s3_client
+from backend.infrastructure.bedrock import get_s3_client
 
 s3 = get_s3_client()
 

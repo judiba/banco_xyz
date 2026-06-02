@@ -1,6 +1,6 @@
-from backend.infrastructure.rag_docs.loader.txt_loader import TxtLoader
-from backend.infrastructure.rag_docs.loader.pdf_loader import PdfLoader
-from backend.infrastructure.rag_docs.loader.docx_loader import DocxLoader
+from backend.rag.documents.loader.txt_loader import TxtLoader
+from backend.rag.documents.loader.pdf_loader import PdfLoader
+from backend.rag.documents.loader.docx_loader import DocxLoader
 
 
 def get_loader(key: str):

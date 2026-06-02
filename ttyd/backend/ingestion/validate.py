@@ -1,4 +1,4 @@
-from .registry import dataset_ready
+from backend.ingestion.registry import dataset_ready
 
 
 def validate_dataset(dataset="default"):

@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from backend.core.storage import tenant_path
+from backend.app_config.storage import tenant_path
 
 
 def registry_file(ctx):
