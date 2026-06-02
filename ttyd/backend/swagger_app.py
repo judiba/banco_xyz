@@ -7,7 +7,7 @@ from backend.application.orchestrator_memory import invoke
 jls_extract_var = "Documentação local do backend para desenvolvimento e testes."
 app = FastAPI(
     title="Talk to Your Data API",
-    version="17.0.0",
+    version="19.0.0",
     description=jls_extract_var,
 )
 
