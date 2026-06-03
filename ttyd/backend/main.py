@@ -20,7 +20,7 @@ setup_logging()
 
 app = FastAPI(
     title="Talk to Your Data API",
-    version="19.0.0",
+    version="20.0.0",
     description="API principal (v1) + rotas legadas de chat/invoke.",
 )
 

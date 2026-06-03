@@ -7,6 +7,9 @@ from backend.agents.research.evolution_engine import evolve
 
 
 async def research_loop():
+    """
+    Runs the research loop.
+    """
     while True:
         hypothesis = await generate()
         result = await run(hypothesis)

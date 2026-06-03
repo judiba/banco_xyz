@@ -1,6 +1,6 @@
 # backend/agents/runtime/rag_search.py
 
-from backend.rag.rag_search import rag_search as core_rag
+from backend.rag.search import rag_search_service as core_rag
 
 
 async def search(ctx):

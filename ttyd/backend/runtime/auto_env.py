@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 
 
+__all__ = ["running_in_docker", "aws_available", "agentcore_available", "detect_environment"]
+
+
 def running_in_docker():
     return Path("/.dockerenv").exists()
 

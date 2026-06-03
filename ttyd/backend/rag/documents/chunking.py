@@ -1,6 +1,9 @@
 from typing import List
 
 
+__all__ = ["split_chunks"]
+
+
 def split_chunks(text: str, max_chars: int = 1200) -> List[str]:
     """
     Divide texto longo em chunks menores para embedding.

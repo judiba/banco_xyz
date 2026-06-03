@@ -14,6 +14,10 @@ class RuntimeOrchestrator:
         async for token in run_plan(self.agent, ctx):
             yield token
 
+    async def run(self, question: str, session_id: str | None = None) -> str:
+        ctx = AgentContext(question=question, session_id=session_id)
+        return await self.agent.run(ctx)
+
 
 _runtime = RuntimeOrchestrator()
 

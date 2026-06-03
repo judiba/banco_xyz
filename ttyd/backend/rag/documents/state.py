@@ -1,6 +1,10 @@
 from typing import Optional
 from backend.rag.documents.store import FaissRAGDocsIndex
 
+
+__all__ = ["get_rag_docs_index"]
+
+
 _rag_docs_index: Optional[FaissRAGDocsIndex] = None
 
 

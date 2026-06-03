@@ -8,12 +8,9 @@ class Agent:
         self.system_prompt = "orchestrator"
 
     async def retrieve(self, ctx: AgentContext):
-        try:
-            from backend.rag.rag_search import rag_search
+        from backend.rag.search import rag_search_service
 
-            return await rag_search(ctx)
-        except Exception:
-            return []
+        return await rag_search_service(ctx)
 
     async def generate(self, ctx: AgentContext, docs) -> AsyncIterator[str]:
         yield "Processando pergunta...\n"

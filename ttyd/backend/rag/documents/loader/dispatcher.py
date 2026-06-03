@@ -3,6 +3,9 @@ from backend.rag.documents.loader.pdf_loader import PdfLoader
 from backend.rag.documents.loader.docx_loader import DocxLoader
 
 
+__all__ = ["get_loader"]
+
+
 def get_loader(key: str):
     key = key.lower()
 

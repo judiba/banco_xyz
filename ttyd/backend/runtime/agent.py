@@ -1,5 +1,5 @@
 from backend.prompts.registry import get_prompt
-from backend.rag.rag_search import rag_search
+from backend.rag.search import rag_search_service as rag_search
 
 
 class Agent:

@@ -1,6 +1,6 @@
 # backend/agents/runtime/rag_async.py
 
-from backend.rag.rag_search import rag_search
+from backend.rag.search import rag_search_service as rag_search
 
 
 async def retrieve_context(ctx):
